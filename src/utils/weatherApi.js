@@ -2,8 +2,8 @@
 // Location: Camp Lawton, Mt. Lemmon, AZ (Coronado National Forest)
 // Coordinates: 32.4440, -110.7873 (Approx. 7,900 feet elevation)
 
-const LAT = "32.4440";
-const LON = "-110.7873";
+const LAT = "32.39806";
+const LON = "-110.725";
 const USER_AGENT = "CampLawtonDashboard/1.0 (contact@catalinacouncil.org)";
 
 // Simple in-memory cache to prevent hitting NWS endpoint limits repeatedly
@@ -80,23 +80,59 @@ export async function fetchLiveWeatherData() {
       }
     }
 
+    // 3. Fetch latest observations from QSLA3
+    const obsResponse = await fetch(`https://api.weather.gov/stations/QSLA3/observations/latest`, {
+      headers: {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/geo+json"
+      }
+    });
+
+    let obsData = null;
+    if (obsResponse.ok) {
+      obsData = await obsResponse.json();
+    }
+
     // Extract current metrics from the first period
     const currentPeriod = periods[0];
-    const relativeHumidity = (currentPeriod.relativeHumidity && typeof currentPeriod.relativeHumidity.value === 'number') ? currentPeriod.relativeHumidity.value : null;
-    const temperature = typeof currentPeriod.temperature === 'number' ? currentPeriod.temperature : null;
+    
+    // Extract real-time metrics from observations if available, otherwise fallback to forecast
+    let currentTempF = typeof currentPeriod.temperature === 'number' ? currentPeriod.temperature : null;
+    let currentWindMph = currentPeriod.windSpeed || null;
+    let currentWindDir = currentPeriod.windDirection || null;
+    let currentHumidity = (currentPeriod.relativeHumidity && typeof currentPeriod.relativeHumidity.value === 'number') ? currentPeriod.relativeHumidity.value : null;
+
+    if (obsData && obsData.properties) {
+      const p = obsData.properties;
+      if (p.temperature && typeof p.temperature.value === 'number') {
+        currentTempF = Math.round((p.temperature.value * 9/5) + 32);
+      }
+      if (p.windSpeed && typeof p.windSpeed.value === 'number') {
+        currentWindMph = `${Math.round(p.windSpeed.value * 0.621371)} mph`;
+      }
+      if (p.windDirection && typeof p.windDirection.value === 'number') {
+        const deg = p.windDirection.value;
+        const dirs = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+        currentWindDir = dirs[Math.round(deg / 22.5) % 16];
+      }
+      if (p.relativeHumidity && typeof p.relativeHumidity.value === 'number') {
+        currentHumidity = Math.round(p.relativeHumidity.value);
+      }
+    }
+
     const duration = Date.now() - startTime;
 
     return {
       current: {
-        temperature: temperature,
-        temperatureUnit: currentPeriod.temperatureUnit || null,
-        windSpeed: currentPeriod.windSpeed || null,
-        windDirection: currentPeriod.windDirection || null,
+        temperature: currentTempF,
+        temperatureUnit: "F",
+        windSpeed: currentWindMph,
+        windDirection: currentWindDir,
         shortForecast: currentPeriod.shortForecast || null,
         detailedForecast: currentPeriod.detailedForecast || null,
         icon: currentPeriod.icon || null,
-        relativeHumidity: relativeHumidity,
-        elevationFeet: 7900,
+        relativeHumidity: currentHumidity,
+        elevationFeet: 7554,
         observationTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isMock: false
       },

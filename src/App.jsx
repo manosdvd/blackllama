@@ -150,59 +150,7 @@ export default function App() {
     refreshWeather();
   }, []);
 
-  // Dynamic Fire Danger & Restrictions Calculation based on NOAA live metrics (Chandler Burning Index model)
-  const getDynamicFireInfo = () => {
-    if (errorWeather || !weatherData || loadingWeather) {
-      return { level: "Unavailable", restriction: "Refer to official Coronado Forest notices", percent: 0 };
-    }
 
-    // Force Extreme if an active NWS warning mentions red flag or extreme fire weather
-    const hasRedFlag = activeAlerts.some(alert => 
-      alert.event.toLowerCase().includes("red flag") || 
-      alert.event.toLowerCase().includes("fire weather")
-    );
-
-    if (hasRedFlag) {
-      return { level: "Extreme", restriction: "Complete Campfire Ban", percent: 100 };
-    }
-
-    const tempF = weatherData.current.temperature;
-    const rh = weatherData.current.relativeHumidity;
-    
-    if (tempF === null || rh === null || tempF === undefined || rh === undefined) {
-      return { level: "Unavailable", restriction: "Live parameters (temperature/humidity) missing from NWS feed. Refer to official Coronado Forest notices.", percent: 0 };
-    }
-    
-    // Chandler Burning Index calculation:
-    const tempC = (tempF - 32) * 5 / 9;
-    const cbi = (((110 - 1.37 * rh) * Math.pow(10, 0.06 * tempC)) / 10);
-
-    let level = "Low";
-    let restriction = "Standard Forest Restrictions";
-    let percent = 20;
-
-    if (cbi >= 97.5) {
-      level = "Extreme";
-      restriction = "Complete Campfire Ban";
-      percent = 100;
-    } else if (cbi >= 90) {
-      level = "Very High";
-      restriction = "Stage II Restrictions";
-      percent = 85;
-    } else if (cbi >= 75) {
-      level = "High";
-      restriction = "Stage I Restrictions";
-      percent = 65;
-    } else if (cbi >= 50) {
-      level = "Moderate";
-      restriction = "Stage I Restrictions";
-      percent = 45;
-    }
-
-    return { level, restriction, percent };
-  };
-
-  const calculatedFire = getDynamicFireInfo();
 
   // Sync Checklist with localStorage
   useEffect(() => {
@@ -644,42 +592,34 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Fire Danger Widget */}
-                      <div className="glass-panel fire-danger-card">
-                        <div>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <h3 style={{ fontFamily: "var(--font-title)" }}>Forest Fire Risk</h3>
-                            <Flame className={`w-5 h-5 ${calculatedFire.level === "Extreme" ? "animate-pulse" : ""}`} style={{ color: "var(--color-primary)" }} />
-                          </div>
-                          
-                          <div className="fire-danger-badge-container">
-                            <span className={`fire-indicator-light bg-level-${calculatedFire.level.toLowerCase().replace(" ", "-")}`}></span>
-                            <h4 className={`fire-danger-level-name level-${calculatedFire.level.toLowerCase().replace(" ", "-")}`}>
-                              {calculatedFire.level} Danger
-                            </h4>
-                          </div>
-
-                          <div className="gauge-track">
-                            <div 
-                              className="gauge-fill"
-                              style={{
-                                width: `${calculatedFire.percent}%`,
-                                background: calculatedFire.level === "Low" || calculatedFire.level === "Moderate" ? "var(--color-success)" : calculatedFire.level === "High" ? "var(--color-warning)" : calculatedFire.level === "Very High" ? "var(--color-primary)" : "var(--color-danger)"
-                              }}
-                            ></div>
-                          </div>
+                      {/* Active Regional Alerts Widget */}
+                      <div className="glass-panel alerts-card">
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                          <h3 style={{ fontFamily: "var(--font-title)" }}>Active Regional Alerts</h3>
+                          <AlertTriangle className={`w-5 h-5 ${activeAlerts.length > 0 ? "text-danger animate-pulse" : "text-success"}`} />
                         </div>
-
-                        <div className="fire-restrictions-box">
-                          <h6>Current Protocol: {calculatedFire.restriction}</h6>
-                          <p>
-                            {calculatedFire.level === "Low" && "Low wildfire danger. Standard Coronado National Forest campfire guidelines apply."}
-                            {calculatedFire.level === "Moderate" && "Moderate fire weather conditions. Campfires permitted in designated steel/concrete fire rings only."}
-                            {calculatedFire.level === "High" && "Campfires permitted only in designated campsite fire rings. Spark screens must remain closed."}
-                            {calculatedFire.level === "Very High" && "Strict fire restrictions in place. Campfires permitted in concrete rings ONLY from 6 PM to 10 PM. No charcoal grills."}
-                            {calculatedFire.level === "Extreme" && "ALL OPEN FIRES PROHIBITED. Only gas camp stoves with on/off safety valves are permitted. Keep shovel & extinguisher nearby."}
-                          </p>
-                        </div>
+                        
+                        {activeAlerts.length === 0 ? (
+                          <div style={{ padding: "16px", background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: "8px", textAlign: "center" }}>
+                            <CheckCircle2 className="w-8 h-8 text-success" style={{ margin: "0 auto 8px" }} />
+                            <h4 style={{ color: "var(--color-success)", fontWeight: "600", marginBottom: "4px" }}>All Clear</h4>
+                            <p style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>No active weather or forest alerts for this region.</p>
+                          </div>
+                        ) : (
+                          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "300px", overflowY: "auto", paddingRight: "4px" }}>
+                            {activeAlerts.map(alert => (
+                              <div key={alert.id} style={{ padding: "12px", background: "rgba(239,68,68,0.08)", borderLeft: "4px solid var(--color-danger)", borderRadius: "4px" }}>
+                                <h5 style={{ color: "var(--color-danger)", fontWeight: "bold", marginBottom: "4px", fontSize: "14px" }}>{alert.event}</h5>
+                                <p style={{ fontSize: "12px", color: "var(--color-text-bright)", marginBottom: "6px" }}>{alert.headline}</p>
+                                {alert.instruction && (
+                                  <p style={{ fontSize: "11px", color: "var(--color-text-muted)", background: "rgba(0,0,0,0.2)", padding: "6px", borderRadius: "4px" }}>
+                                    {alert.instruction}
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </>
                   )}
