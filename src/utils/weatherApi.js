@@ -140,6 +140,7 @@ async function getNwsEndpoints() {
 }
 
 export async function fetchLiveWeatherData() {
+  const startTime = Date.now();
   try {
     const endpoints = await getNwsEndpoints();
 
@@ -152,14 +153,14 @@ export async function fetchLiveWeatherData() {
     });
 
     if (!forecastResponse.ok) {
-      throw new Error(`Forecast retrieval failed: ${forecastResponse.status}`);
+      throw new Error(`Forecast retrieval failed: HTTP ${forecastResponse.status}`);
     }
 
     const forecastData = await forecastResponse.json();
     const periods = forecastData.properties.periods;
 
     if (!periods || periods.length === 0) {
-      throw new Error("Empty forecast periods returned");
+      throw new Error("Empty forecast periods returned from NOAA");
     }
 
     // 2. Fetch current active alerts for coordinates
@@ -187,9 +188,8 @@ export async function fetchLiveWeatherData() {
 
     // Extract current metrics from the first period
     const currentPeriod = periods[0];
-    
-    // Fallback humidity extraction (since detailed grid data is a separate large fetch)
     const relativeHumidity = currentPeriod.relativeHumidity?.value || 30;
+    const duration = Date.now() - startTime;
 
     return {
       current: {
@@ -206,10 +206,34 @@ export async function fetchLiveWeatherData() {
         isMock: false
       },
       forecast: periods.slice(0, 8), // Get next 8 periods (approx 4 days day/night)
-      alerts: activeAlerts
+      alerts: activeAlerts,
+      syncInfo: {
+        status: "success",
+        timestamp: new Date().toLocaleString(),
+        responseTimeMs: duration,
+        origin: "National Weather Service (NOAA) API",
+        pointsUrl: `https://api.weather.gov/points/${LAT},${LON}`,
+        forecastUrl: endpoints.forecastUrl,
+        alertsUrl: `https://api.weather.gov/alerts/active?point=${LAT},${LON}`,
+        gridId: "TWC",
+        gridCoords: "99, 57",
+        rawMetadataJson: JSON.stringify({
+          updated: forecastData.properties.updated,
+          generatedAt: forecastData.properties.generatedAt,
+          elevation: forecastData.properties.elevation,
+          units: forecastData.properties.units,
+          gridId: "TWC",
+          gridX: 99,
+          gridY: 57,
+          periodsCount: periods.length,
+          httpStatus: "200 OK",
+          userAgent: USER_AGENT
+        }, null, 2)
+      }
     };
 
   } catch (error) {
+    const duration = Date.now() - startTime;
     console.warn("NWS API Fetch error. Using premium offline fallback weather data.", error);
     // Return mock data but adjust timestamps/dates so they look dynamic
     return {
@@ -217,6 +241,24 @@ export async function fetchLiveWeatherData() {
       current: {
         ...MOCK_WEATHER_DATA.current,
         observationTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      },
+      syncInfo: {
+        status: "fallback",
+        timestamp: new Date().toLocaleString(),
+        responseTimeMs: duration,
+        origin: "Offline Cache (Mt. Lemmon Seasonal Baseline)",
+        pointsUrl: `https://api.weather.gov/points/${LAT},${LON}`,
+        forecastUrl: "Local Fallback Stream (Static JSON)",
+        alertsUrl: "Local Fallback Stream (Static JSON)",
+        gridId: "TWC (Simulated)",
+        gridCoords: "99, 57",
+        rawMetadataJson: JSON.stringify({
+          error: error.message,
+          fallbackReason: "NOAA API connection failed, CORS origin blocked, or network offline. Serving high-fidelity baseline data.",
+          simulationMode: "Coronado National Forest Summer Baseline",
+          elevationTarget: "7,900 feet",
+          lastAttemptTime: new Date().toISOString()
+        }, null, 2)
       }
     };
   }
