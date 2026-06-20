@@ -6,7 +6,7 @@ import {
   Activity, ExternalLink, Thermometer, ShieldAlert, Layers, 
   RefreshCw, CheckCircle2, AlertOctagon, HelpCircle
 } from "lucide-react";
-import { fetchLiveWeatherData, MOCK_WEATHER_DATA } from "./utils/weatherApi";
+import { fetchLiveWeatherData } from "./utils/weatherApi";
 
 // Campsite Data
 const CAMPSITES = [
@@ -593,6 +593,15 @@ export default function App() {
                           <span style={{ fontSize: "10px", color: "var(--color-success)", marginTop: "4px", background: "rgba(16,185,129,0.08)", padding: "2px 8px", borderRadius: "10px" }}>
                             Synced: {weatherData?.syncInfo?.timestamp ? weatherData.syncInfo.timestamp.split(', ')[1] : "OK"}
                           </span>
+                          <a 
+                            href="https://weather.gov" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            style={{ fontSize: "11px", color: "var(--color-primary-light)", marginTop: "8px", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "2px" }}
+                          >
+                            Source: NWS NOAA
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
                         </div>
 
                         <div className="weather-details-grid">
@@ -748,7 +757,12 @@ export default function App() {
               <div className="animate-slide-up">
                 <div className="glass-panel" style={{ marginBottom: "24px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
-                    <h3 style={{ fontFamily: "var(--font-title)" }}>National Weather Service Live Feed</h3>
+                    <div>
+                      <h3 style={{ fontFamily: "var(--font-title)" }}>National Weather Service Live Feed</h3>
+                      <p style={{ fontSize: "12px", color: "var(--color-text-muted)", marginTop: "2px" }}>
+                        Live meteorological feeds synced from <a href="https://weather.gov" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-primary-light)", textDecoration: "underline" }}>National Weather Service (NOAA)</a>
+                      </p>
+                    </div>
                     <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
                       Station: Coronado National Forest (AZZ150)
                     </span>
