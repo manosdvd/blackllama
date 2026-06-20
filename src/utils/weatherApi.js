@@ -82,18 +82,19 @@ export async function fetchLiveWeatherData() {
 
     // Extract current metrics from the first period
     const currentPeriod = periods[0];
-    const relativeHumidity = currentPeriod.relativeHumidity?.value || 30;
+    const relativeHumidity = (currentPeriod.relativeHumidity && typeof currentPeriod.relativeHumidity.value === 'number') ? currentPeriod.relativeHumidity.value : null;
+    const temperature = typeof currentPeriod.temperature === 'number' ? currentPeriod.temperature : null;
     const duration = Date.now() - startTime;
 
     return {
       current: {
-        temperature: currentPeriod.temperature,
-        temperatureUnit: currentPeriod.temperatureUnit || "F",
-        windSpeed: currentPeriod.windSpeed,
-        windDirection: currentPeriod.windDirection,
-        shortForecast: currentPeriod.shortForecast,
-        detailedForecast: currentPeriod.detailedForecast,
-        icon: currentPeriod.icon,
+        temperature: temperature,
+        temperatureUnit: currentPeriod.temperatureUnit || null,
+        windSpeed: currentPeriod.windSpeed || null,
+        windDirection: currentPeriod.windDirection || null,
+        shortForecast: currentPeriod.shortForecast || null,
+        detailedForecast: currentPeriod.detailedForecast || null,
+        icon: currentPeriod.icon || null,
         relativeHumidity: relativeHumidity,
         elevationFeet: 7900,
         observationTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),

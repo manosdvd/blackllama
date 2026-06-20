@@ -504,6 +504,9 @@ html, body, #root {
 .level-extreme { color: #ef4444; }
 .bg-level-extreme { background-color: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.7); animation: pulse-border 1s infinite; }
 
+.level-unavailable { color: var(--color-text-muted); }
+.bg-level-unavailable { background-color: rgba(255, 255, 255, 0.2); box-shadow: none; }
+
 .gauge-track {
   width: 100%;
   height: 8px;

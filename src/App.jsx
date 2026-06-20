@@ -167,7 +167,11 @@ export default function App() {
     }
 
     const tempF = weatherData.current.temperature;
-    const rh = weatherData.current.relativeHumidity || 30;
+    const rh = weatherData.current.relativeHumidity;
+    
+    if (tempF === null || rh === null || tempF === undefined || rh === undefined) {
+      return { level: "Unavailable", restriction: "Live parameters (temperature/humidity) missing from NWS feed. Refer to official Coronado Forest notices.", percent: 0 };
+    }
     
     // Chandler Burning Index calculation:
     const tempC = (tempF - 32) * 5 / 9;
@@ -587,9 +591,13 @@ export default function App() {
                             className="weather-icon-giant"
                           />
                           <div className="weather-temp-giant">
-                            {weatherData?.current.temperature}<span>°F</span>
+                            {weatherData?.current.temperature !== null && weatherData?.current.temperature !== undefined ? (
+                              <>{weatherData.current.temperature}<span>°F</span></>
+                            ) : (
+                              "Unavailable"
+                            )}
                           </div>
-                          <span className="weather-condition-text">{weatherData?.current.shortForecast}</span>
+                          <span className="weather-condition-text">{weatherData?.current.shortForecast || "Unavailable"}</span>
                           <span style={{ fontSize: "10px", color: "var(--color-success)", marginTop: "4px", background: "rgba(16,185,129,0.08)", padding: "2px 8px", borderRadius: "10px" }}>
                             Synced: {weatherData?.syncInfo?.timestamp ? weatherData.syncInfo.timestamp.split(', ')[1] : "OK"}
                           </span>
@@ -609,21 +617,21 @@ export default function App() {
                             <div className="weather-detail-icon"><Wind className="w-5 h-5" /></div>
                             <div className="weather-detail-info">
                               <p>Wind Speed</p>
-                              <h5>{weatherData?.current.windSpeed} ({weatherData?.current.windDirection})</h5>
+                              <h5>{weatherData?.current.windSpeed ? `${weatherData.current.windSpeed} (${weatherData.current.windDirection || ""})` : "Unavailable"}</h5>
                             </div>
                           </div>
                           <div className="weather-detail-item">
                             <div className="weather-detail-icon"><Droplets className="w-5 h-5" /></div>
                             <div className="weather-detail-info">
                               <p>Humidity</p>
-                              <h5>{weatherData?.current.relativeHumidity}%</h5>
+                              <h5>{weatherData?.current.relativeHumidity !== null && weatherData?.current.relativeHumidity !== undefined ? `${weatherData.current.relativeHumidity}%` : "Unavailable"}</h5>
                             </div>
                           </div>
                           <div className="weather-detail-item">
                             <div className="weather-detail-icon"><Thermometer className="w-5 h-5" /></div>
                             <div className="weather-detail-info">
                               <p>Cool Factor</p>
-                              <h5>-22° vs Tucson</h5>
+                              <h5>{weatherData?.current.temperature !== null && weatherData?.current.temperature !== undefined ? "~22°F Cooler" : "Unavailable"}</h5>
                             </div>
                           </div>
                           <div className="weather-detail-item">
@@ -799,13 +807,19 @@ export default function App() {
                       <div className="weather-primary-widget" style={{ borderBottom: "1px solid var(--border-glass)", paddingBottom: "24px" }}>
                         <div className="weather-dial-container">
                           <img src={weatherData?.current.icon} alt="Forecast icon" className="weather-icon-giant" />
-                          <div className="weather-temp-giant">{weatherData?.current.temperature}<span>°F</span></div>
-                          <span style={{ fontWeight: 700, fontSize: "16px" }}>{weatherData?.current.shortForecast}</span>
+                          <div className="weather-temp-giant">
+                            {weatherData?.current.temperature !== null && weatherData?.current.temperature !== undefined ? (
+                              <>{weatherData.current.temperature}<span>°F</span></>
+                            ) : (
+                              "Unavailable"
+                            )}
+                          </div>
+                          <span style={{ fontWeight: 700, fontSize: "16px" }}>{weatherData?.current.shortForecast || "Unavailable"}</span>
                         </div>
                         <div>
                           <h4 style={{ color: "var(--color-primary-light)", marginBottom: "8px", fontWeight: "600" }}>Current Detailed Forecast</h4>
                           <p style={{ fontSize: "14px", lineHeight: "1.6", color: "var(--color-text-muted)" }}>
-                            {weatherData?.current.detailedForecast}
+                            {weatherData?.current.detailedForecast || "Unavailable"}
                           </p>
                           
                           <div className="weather-details-grid" style={{ marginTop: "20px" }}>
@@ -813,14 +827,14 @@ export default function App() {
                               <Wind className="text-primary w-4 h-4" />
                               <div>
                                 <span style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Wind</span>
-                                <h6 style={{ fontSize: "13px" }}>{weatherData?.current.windSpeed} {weatherData?.current.windDirection}</h6>
+                                <h6 style={{ fontSize: "13px" }}>{weatherData?.current.windSpeed ? `${weatherData.current.windSpeed} ${weatherData.current.windDirection || ""}` : "Unavailable"}</h6>
                               </div>
                             </div>
                             <div className="weather-detail-item">
                               <Droplets className="text-primary w-4 h-4" />
                               <div>
                                 <span style={{ fontSize: "11px", color: "var(--color-text-muted)" }}>Humidity</span>
-                                <h6 style={{ fontSize: "13px" }}>{weatherData?.current.relativeHumidity}%</h6>
+                                <h6 style={{ fontSize: "13px" }}>{weatherData?.current.relativeHumidity !== null && weatherData?.current.relativeHumidity !== undefined ? `${weatherData.current.relativeHumidity}%` : "Unavailable"}</h6>
                               </div>
                             </div>
                             <div className="weather-detail-item">
@@ -859,155 +873,159 @@ export default function App() {
                   )}
                 </div>
 
-                {/* Live NOAA Sync & API Verification Control Panel */}
-                <div className="glass-panel" style={{ marginBottom: "24px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
-                    <div>
-                      <h3 style={{ fontFamily: "var(--font-title)" }}>NOAA Live Sync Verification</h3>
-                      <p style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
-                        Verify the live government telemetry and sync statuses for Mt. Lemmon.
-                      </p>
-                    </div>
-                    <button 
-                      onClick={refreshWeather}
-                      className="admin-btn active"
-                      style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 16px" }}
-                      disabled={loadingWeather}
-                    >
-                      <RefreshCw className={`w-4 h-4 ${loadingWeather ? "animate-spin" : ""}`} />
-                      Sync Live Data Now
-                    </button>
-                  </div>
+                {!errorWeather && weatherData && (
+                  <>
+                    {/* Live NOAA Sync & API Verification Control Panel */}
+                    <div className="glass-panel" style={{ marginBottom: "24px", marginTop: "24px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
+                        <div>
+                          <h3 style={{ fontFamily: "var(--font-title)" }}>NOAA Live Sync Verification</h3>
+                          <p style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
+                            Verify the live government telemetry and sync statuses for Mt. Lemmon.
+                          </p>
+                        </div>
+                        <button 
+                          onClick={refreshWeather}
+                          className="admin-btn active"
+                          style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 16px" }}
+                          disabled={loadingWeather}
+                        >
+                          <RefreshCw className={`w-4 h-4 ${loadingWeather ? "animate-spin" : ""}`} />
+                          Sync Live Data Now
+                        </button>
+                      </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "16px" }} className="responsive-split">
-                    <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-glass)", borderRadius: "8px", padding: "16px" }}>
-                      <h4 style={{ color: "var(--color-primary-light)", fontSize: "14px", marginBottom: "12px", fontWeight: "600" }}>Sync Pipeline Diagnostics</h4>
-                      <table style={{ width: "100%", fontSize: "13px", borderCollapse: "collapse" }}>
-                        <tbody>
-                          <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                            <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Coordinates</td>
-                            <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>32.4440° N, 110.7873° W</td>
-                          </tr>
-                          <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                            <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Source Server</td>
-                            <td style={{ padding: "8px 0", textAlign: "right" }}>
-                              {weatherData?.syncInfo?.status === "success" ? (
-                                <span style={{ color: "var(--color-success)", fontWeight: "700" }}>● api.weather.gov (NOAA)</span>
-                              ) : (
-                                <span style={{ color: "var(--color-warning)", fontWeight: "700" }}>● Offline Fallback Mode</span>
-                              )}
-                            </td>
-                          </tr>
-                          <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                            <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Last Synced</td>
-                            <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>{weatherData?.syncInfo?.timestamp || new Date().toLocaleString()}</td>
-                          </tr>
-                          <tr>
-                            <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>API Response Time</td>
-                            <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>{weatherData?.syncInfo?.responseTimeMs || "0"} ms</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "16px" }} className="responsive-split">
+                        <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-glass)", borderRadius: "8px", padding: "16px" }}>
+                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "14px", marginBottom: "12px", fontWeight: "600" }}>Sync Pipeline Diagnostics</h4>
+                          <table style={{ width: "100%", fontSize: "13px", borderCollapse: "collapse" }}>
+                            <tbody>
+                              <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                                <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Coordinates</td>
+                                <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>32.4440° N, 110.7873° W</td>
+                              </tr>
+                              <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                                <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Source Server</td>
+                                <td style={{ padding: "8px 0", textAlign: "right" }}>
+                                  {weatherData?.syncInfo?.status === "success" ? (
+                                    <span style={{ color: "var(--color-success)", fontWeight: "700" }}>● api.weather.gov (NOAA)</span>
+                                  ) : (
+                                    <span style={{ color: "var(--color-warning)", fontWeight: "700" }}>● Offline Fallback Mode</span>
+                                  )}
+                                </td>
+                              </tr>
+                              <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                                <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>Last Synced</td>
+                                <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>{weatherData?.syncInfo?.timestamp || new Date().toLocaleString()}</td>
+                              </tr>
+                              <tr>
+                                <td style={{ padding: "8px 0", color: "var(--color-text-muted)" }}>API Response Time</td>
+                                <td style={{ padding: "8px 0", textAlign: "right", fontWeight: "600" }}>{weatherData?.syncInfo?.responseTimeMs || "0"} ms</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
 
-                    <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-glass)", borderRadius: "8px", padding: "16px" }}>
-                      <h4 style={{ color: "var(--color-primary-light)", fontSize: "14px", marginBottom: "12px", fontWeight: "600" }}>Origin API Feeds</h4>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
-                        <p style={{ color: "var(--color-text-muted)", fontSize: "12px", marginBottom: "4px" }}>
-                          Click below to inspect the government JSON streams directly from NOAA to verify the data is authentic:
-                        </p>
-                        <a 
-                          href={weatherData?.syncInfo?.pointsUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
+                        <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid var(--border-glass)", borderRadius: "8px", padding: "16px" }}>
+                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "14px", marginBottom: "12px", fontWeight: "600" }}>Origin API Feeds</h4>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
+                            <p style={{ color: "var(--color-text-muted)", fontSize: "12px", marginBottom: "4px" }}>
+                              Click below to inspect the government JSON streams directly from NOAA to verify the data is authentic:
+                            </p>
+                            <a 
+                              href={weatherData?.syncInfo?.pointsUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              1. Raw NWS Location Grid Lookup
+                            </a>
+                            <a 
+                              href={weatherData?.syncInfo?.status === "success" ? weatherData.syncInfo.forecastUrl : "https://api.weather.gov/gridpoints/TWC/99,57/forecast"} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              2. Raw Live Forecast Feed (JSON)
+                            </a>
+                            <a 
+                              href={weatherData?.syncInfo?.alertsUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                              3. Raw Active Warnings Feed
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ marginTop: "12px" }}>
+                        <button 
+                          onClick={() => {
+                            const pre = document.getElementById("nws-raw-pre");
+                            if (pre) pre.style.display = pre.style.display === "none" ? "block" : "none";
+                          }}
+                          className="admin-btn"
+                          style={{ fontSize: "12px" }}
                         >
-                          <ExternalLink className="w-4 h-4" />
-                          1. Raw NWS Location Grid Lookup
-                        </a>
-                        <a 
-                          href={weatherData?.syncInfo?.status === "success" ? weatherData.syncInfo.forecastUrl : "https://api.weather.gov/gridpoints/TWC/99,57/forecast"} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
+                          Toggle Detailed Response Payload Metadata
+                        </button>
+                        <pre 
+                          id="nws-raw-pre" 
+                          style={{ 
+                            display: "none", 
+                            marginTop: "12px", 
+                            padding: "12px", 
+                            background: "#030712", 
+                            border: "1px solid var(--border-glass)", 
+                            borderRadius: "6px", 
+                            fontSize: "11px", 
+                            overflowX: "auto",
+                            color: "#34d399",
+                            maxHeight: "150px"
+                          }}
                         >
-                          <ExternalLink className="w-4 h-4" />
-                          2. Raw Live Forecast Feed (JSON)
-                        </a>
-                        <a 
-                          href={weatherData?.syncInfo?.alertsUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          style={{ color: "var(--color-primary)", textDecoration: "underline", display: "flex", alignItems: "center", gap: "6px" }}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          3. Raw Active Warnings Feed
-                        </a>
+                          {weatherData?.syncInfo?.rawMetadataJson || "// Metadata not loaded"}
+                        </pre>
                       </div>
                     </div>
-                  </div>
 
-                  <div style={{ marginTop: "12px" }}>
-                    <button 
-                      onClick={() => {
-                        const pre = document.getElementById("nws-raw-pre");
-                        if (pre) pre.style.display = pre.style.display === "none" ? "block" : "none";
-                      }}
-                      className="admin-btn"
-                      style={{ fontSize: "12px" }}
-                    >
-                      Toggle Detailed Response Payload Metadata
-                    </button>
-                    <pre 
-                      id="nws-raw-pre" 
-                      style={{ 
-                        display: "none", 
-                        marginTop: "12px", 
-                        padding: "12px", 
-                        background: "#030712", 
-                        border: "1px solid var(--border-glass)", 
-                        borderRadius: "6px", 
-                        fontSize: "11px", 
-                        overflowX: "auto",
-                        color: "#34d399",
-                        maxHeight: "150px"
-                      }}
-                    >
-                      {weatherData?.syncInfo?.rawMetadataJson || "// Metadata not loaded"}
-                    </pre>
-                  </div>
-                </div>
-
-                {/* Active Alerts Panel */}
-                <div className="glass-panel">
-                  <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "16px" }}>
-                    Active Severe Weather Alerts & Watches ({activeAlerts.length})
-                  </h3>
-                  {activeAlerts.length > 0 ? (
-                    <div className="weather-alerts-container">
-                      {activeAlerts.map((alert) => (
-                        <div key={alert.id} className="glass-card-interactive weather-alert-card warning">
-                          <div className="weather-alert-header">
-                            <h4>{alert.event}</h4>
-                            <span className="severity-badge">{alert.severity} Severity</span>
-                          </div>
-                          <p className="weather-alert-desc"><strong>Headline:</strong> {alert.headline}</p>
-                          <p className="weather-alert-desc"><strong>Description:</strong> {alert.description}</p>
-                          {alert.instruction && (
-                            <div className="weather-alert-instruction">
-                              <strong>Directives for Leaders:</strong> {alert.instruction}
+                    {/* Active Alerts Panel */}
+                    <div className="glass-panel">
+                      <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "16px" }}>
+                        Active Severe Weather Alerts & Watches ({activeAlerts.length})
+                      </h3>
+                      {activeAlerts.length > 0 ? (
+                        <div className="weather-alerts-container">
+                          {activeAlerts.map((alert) => (
+                            <div key={alert.id} className="glass-card-interactive weather-alert-card warning">
+                              <div className="weather-alert-header">
+                                <h4>{alert.event}</h4>
+                                <span className="severity-badge">{alert.severity} Severity</span>
+                              </div>
+                              <p className="weather-alert-desc"><strong>Headline:</strong> {alert.headline}</p>
+                              <p className="weather-alert-desc"><strong>Description:</strong> {alert.description}</p>
+                              {alert.instruction && (
+                                <div className="weather-alert-instruction">
+                                  <strong>Directives for Leaders:</strong> {alert.instruction}
+                                </div>
+                              )}
                             </div>
-                          )}
+                          ))}
                         </div>
-                      ))}
+                      ) : (
+                        <div style={{ textAlign: "center", padding: "30px", color: "var(--color-text-muted)" }}>
+                          <CheckCircle2 className="w-12 h-12 text-success" style={{ margin: "0 auto 12px" }} />
+                          <p>No severe meteorological watches, warnings, or red flag advisories are currently active for the Santa Catalina Ranger District coordinates.</p>
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div style={{ textAlign: "center", padding: "30px", color: "var(--color-text-muted)" }}>
-                      <CheckCircle2 className="w-12 h-12 text-success" style={{ margin: "0 auto 12px" }} />
-                      <p>No severe meteorological watches, warnings, or red flag advisories are currently active for the Santa Catalina Ranger District coordinates.</p>
-                    </div>
-                  )}
-                </div>
+                  </>
+                )}
               </div>
             )}
 
