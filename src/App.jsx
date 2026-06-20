@@ -112,11 +112,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [weatherData, setWeatherData] = useState(null);
   const [loadingWeather, setLoadingWeather] = useState(true);
+  const [errorWeather, setErrorWeather] = useState(null);
   const [activeAlerts, setActiveAlerts] = useState([]);
-  
-  // Custom Overrides / Interactive Simulator States
-  const [fireDanger, setFireDanger] = useState("Very High");
-  const [fireRestriction, setFireRestriction] = useState("Stage II Restrictions");
   
   // Campsite Finder Selection
   const [selectedCampsiteId, setSelectedCampsiteId] = useState("apache");
@@ -134,15 +131,74 @@ export default function App() {
   // Load weather from API on mount
   const refreshWeather = async () => {
     setLoadingWeather(true);
-    const data = await fetchLiveWeatherData();
-    setWeatherData(data);
-    setActiveAlerts(data.alerts || []);
-    setLoadingWeather(false);
+    setErrorWeather(null);
+    try {
+      const data = await fetchLiveWeatherData();
+      setWeatherData(data);
+      setActiveAlerts(data.alerts || []);
+    } catch (err) {
+      console.error("Failed to load live weather from NOAA:", err);
+      setErrorWeather(err.message || "NOAA NWS API is currently unreachable.");
+      setWeatherData(null);
+      setActiveAlerts([]);
+    } finally {
+      setLoadingWeather(false);
+    }
   };
 
   useEffect(() => {
     refreshWeather();
   }, []);
+
+  // Dynamic Fire Danger & Restrictions Calculation based on NOAA live metrics (Chandler Burning Index model)
+  const getDynamicFireInfo = () => {
+    if (errorWeather || !weatherData || loadingWeather) {
+      return { level: "Unavailable", restriction: "Refer to official Coronado Forest notices", percent: 0 };
+    }
+
+    // Force Extreme if an active NWS warning mentions red flag or extreme fire weather
+    const hasRedFlag = activeAlerts.some(alert => 
+      alert.event.toLowerCase().includes("red flag") || 
+      alert.event.toLowerCase().includes("fire weather")
+    );
+
+    if (hasRedFlag) {
+      return { level: "Extreme", restriction: "Complete Campfire Ban", percent: 100 };
+    }
+
+    const tempF = weatherData.current.temperature;
+    const rh = weatherData.current.relativeHumidity || 30;
+    
+    // Chandler Burning Index calculation:
+    const tempC = (tempF - 32) * 5 / 9;
+    const cbi = (((110 - 1.37 * rh) * Math.pow(10, 0.06 * tempC)) / 10);
+
+    let level = "Low";
+    let restriction = "Standard Forest Restrictions";
+    let percent = 20;
+
+    if (cbi >= 97.5) {
+      level = "Extreme";
+      restriction = "Complete Campfire Ban";
+      percent = 100;
+    } else if (cbi >= 90) {
+      level = "Very High";
+      restriction = "Stage II Restrictions";
+      percent = 85;
+    } else if (cbi >= 75) {
+      level = "High";
+      restriction = "Stage I Restrictions";
+      percent = 65;
+    } else if (cbi >= 50) {
+      level = "Moderate";
+      restriction = "Stage I Restrictions";
+      percent = 45;
+    }
+
+    return { level, restriction, percent };
+  };
+
+  const calculatedFire = getDynamicFireInfo();
 
   // Sync Checklist with localStorage
   useEffect(() => {
@@ -337,33 +393,9 @@ export default function App() {
           </div>
         </nav>
 
-        {/* Live Simulator Adjuster in Sidebar Footer */}
+        {/* Sidebar Footer */}
         <div className="sidebar-footer">
-          <div className="admin-toggle-panel">
-            <h6>Simulate Alert Scenarios</h6>
-            <div className="admin-flex">
-              <button 
-                onClick={() => { setFireDanger("High"); setFireRestriction("Stage I Restrictions"); }}
-                className={`admin-btn ${fireDanger === "High" ? "active" : ""}`}
-              >
-                Stage I / High
-              </button>
-              <button 
-                onClick={() => { setFireDanger("Very High"); setFireRestriction("Stage II Restrictions"); }}
-                className={`admin-btn ${fireDanger === "Very High" ? "active" : ""}`}
-              >
-                Stage II / V. High
-              </button>
-              <button 
-                onClick={() => { setFireDanger("Extreme"); setFireRestriction("Complete Campfire Ban"); }}
-                className={`admin-btn ${fireDanger === "Extreme" ? "active" : ""}`}
-              >
-                Extreme / Ban
-              </button>
-            </div>
-          </div>
-          
-          <div className="mt-4 sidebar-contact-card">
+          <div className="sidebar-contact-card">
             <strong>Catalina Council Office</strong>
             <p>Phone: 520.750.0385</p>
             <p>Mt. Lemmon, AZ (7,900 ft)</p>
@@ -405,9 +437,9 @@ export default function App() {
           </div>
 
           <div className="meta-stats">
-            <span className="stat-badge" style={{ borderColor: weatherData?.syncInfo?.status === "success" ? "rgba(16, 185, 129, 0.3)" : "rgba(245, 158, 11, 0.3)" }}>
-              <span className={`inline-block w-2 h-2 rounded-full ${weatherData?.syncInfo?.status === "success" ? "bg-success" : "bg-warning"}`} style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: weatherData?.syncInfo?.status === "success" ? 'var(--color-success)' : 'var(--color-warning)' }}></span>
-              Sync: {weatherData?.syncInfo?.status === "success" ? "LIVE" : "CACHE"}
+            <span className="stat-badge" style={{ borderColor: errorWeather ? "rgba(239, 68, 68, 0.3)" : weatherData?.syncInfo?.status === "success" ? "rgba(16, 185, 129, 0.3)" : "rgba(245, 158, 11, 0.3)" }}>
+              <span className="inline-block w-2 h-2 rounded-full" style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: errorWeather ? 'var(--color-danger)' : weatherData?.syncInfo?.status === "success" ? 'var(--color-success)' : 'var(--color-warning)' }}></span>
+              Sync: {errorWeather ? "OFFLINE" : loadingWeather ? "SYNCING" : "LIVE"}
             </span>
             <span className="stat-badge camp-open">
               <span className="inline-block w-2.5 h-2.5 rounded-full bg-success"></span>
@@ -513,17 +545,42 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="dashboard-grid">
-                  {/* Weather Overview Widget */}
-                  <div className="glass-panel weather-primary-widget">
-                    <div className="weather-dial-container">
-                      {loadingWeather ? (
-                        <div style={{ padding: "40px 0", textAlign: "center" }}>
-                          <RefreshCw className="w-8 h-8 animate-spin text-primary" style={{ margin: "0 auto 10px" }} />
-                          <p style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>Connecting to NOAA...</p>
+                 <div className="dashboard-grid">
+                  {loadingWeather ? (
+                    <div className="glass-panel weather-primary-widget" style={{ gridColumn: "span 2", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "220px" }}>
+                      <div style={{ textAlign: "center" }}>
+                        <RefreshCw className="w-10 h-10 animate-spin text-primary" style={{ margin: "0 auto 12px" }} />
+                        <p style={{ fontSize: "14px", color: "var(--color-text-muted)" }}>Establishing Live NOAA Connection...</p>
+                      </div>
+                    </div>
+                  ) : errorWeather ? (
+                    <div className="glass-panel weather-primary-widget" style={{ gridColumn: "span 2", borderColor: "rgba(239, 68, 68, 0.3)" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "12px", gridColumn: "span 2" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "var(--color-danger)" }}>
+                          <AlertOctagon className="w-8 h-8" />
+                          <h3 style={{ fontFamily: "var(--font-title)", fontWeight: 700 }}>NOAA Telemetry Connection Failure</h3>
                         </div>
-                      ) : (
-                        <>
+                        <p style={{ fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                          This dashboard is configured for real live data only. The connection to the National Weather Service (weather.gov) coordinates lookup has failed or is currently offline.
+                        </p>
+                        <div style={{ padding: "10px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: "6px", fontSize: "12px", color: "var(--color-danger)", fontFamily: "monospace" }}>
+                          Error: {errorWeather}
+                        </div>
+                        <button 
+                          onClick={refreshWeather}
+                          className="admin-btn active"
+                          style={{ alignSelf: "flex-start", marginTop: "8px", display: "flex", alignItems: "center", gap: "8px", background: "rgba(239,68,68,0.15)", borderColor: "rgba(239,68,68,0.3)", color: "#f87171" }}
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Retry Live Sync
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Weather Overview Widget */}
+                      <div className="glass-panel weather-primary-widget">
+                        <div className="weather-dial-container">
                           <img 
                             src={weatherData?.current.icon} 
                             alt={weatherData?.current.shortForecast} 
@@ -533,86 +590,82 @@ export default function App() {
                             {weatherData?.current.temperature}<span>°F</span>
                           </div>
                           <span className="weather-condition-text">{weatherData?.current.shortForecast}</span>
-                          {weatherData?.current.isMock ? (
-                            <span style={{ fontSize: "10px", color: "var(--color-warning)", marginTop: "4px", background: "rgba(245,158,11,0.08)", padding: "2px 8px", borderRadius: "10px" }}>
-                              Mock Feed Active
-                            </span>
-                          ) : (
-                            <span style={{ fontSize: "10px", color: "var(--color-success)", marginTop: "4px", background: "rgba(16,185,129,0.08)", padding: "2px 8px", borderRadius: "10px" }}>
-                              Synced: {weatherData?.syncInfo?.timestamp ? weatherData.syncInfo.timestamp.split(', ')[1] : "OK"}
-                            </span>
-                          )}
-                        </>
-                      )}
-                    </div>
+                          <span style={{ fontSize: "10px", color: "var(--color-success)", marginTop: "4px", background: "rgba(16,185,129,0.08)", padding: "2px 8px", borderRadius: "10px" }}>
+                            Synced: {weatherData?.syncInfo?.timestamp ? weatherData.syncInfo.timestamp.split(', ')[1] : "OK"}
+                          </span>
+                        </div>
 
-                    <div className="weather-details-grid">
-                      <div className="weather-detail-item">
-                        <div className="weather-detail-icon"><Wind className="w-5 h-5" /></div>
-                        <div className="weather-detail-info">
-                          <p>Wind Speed</p>
-                          <h5>{loadingWeather ? "--" : `${weatherData?.current.windSpeed} (${weatherData?.current.windDirection})`}</h5>
+                        <div className="weather-details-grid">
+                          <div className="weather-detail-item">
+                            <div className="weather-detail-icon"><Wind className="w-5 h-5" /></div>
+                            <div className="weather-detail-info">
+                              <p>Wind Speed</p>
+                              <h5>{weatherData?.current.windSpeed} ({weatherData?.current.windDirection})</h5>
+                            </div>
+                          </div>
+                          <div className="weather-detail-item">
+                            <div className="weather-detail-icon"><Droplets className="w-5 h-5" /></div>
+                            <div className="weather-detail-info">
+                              <p>Humidity</p>
+                              <h5>{weatherData?.current.relativeHumidity}%</h5>
+                            </div>
+                          </div>
+                          <div className="weather-detail-item">
+                            <div className="weather-detail-icon"><Thermometer className="w-5 h-5" /></div>
+                            <div className="weather-detail-info">
+                              <p>Cool Factor</p>
+                              <h5>-22° vs Tucson</h5>
+                            </div>
+                          </div>
+                          <div className="weather-detail-item">
+                            <div className="weather-detail-icon"><Layers className="w-5 h-5" /></div>
+                            <div className="weather-detail-info">
+                              <p>Observation</p>
+                              <h5>{weatherData?.current.observationTime}</h5>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="weather-detail-item">
-                        <div className="weather-detail-icon"><Droplets className="w-5 h-5" /></div>
-                        <div className="weather-detail-info">
-                          <p>Humidity</p>
-                          <h5>{loadingWeather ? "--" : `${weatherData?.current.relativeHumidity}%`}</h5>
+
+                      {/* Fire Danger Widget */}
+                      <div className="glass-panel fire-danger-card">
+                        <div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <h3 style={{ fontFamily: "var(--font-title)" }}>Forest Fire Risk</h3>
+                            <Flame className={`w-5 h-5 ${calculatedFire.level === "Extreme" ? "animate-pulse" : ""}`} style={{ color: "var(--color-primary)" }} />
+                          </div>
+                          
+                          <div className="fire-danger-badge-container">
+                            <span className={`fire-indicator-light bg-level-${calculatedFire.level.toLowerCase().replace(" ", "-")}`}></span>
+                            <h4 className={`fire-danger-level-name level-${calculatedFire.level.toLowerCase().replace(" ", "-")}`}>
+                              {calculatedFire.level} Danger
+                            </h4>
+                          </div>
+
+                          <div className="gauge-track">
+                            <div 
+                              className="gauge-fill"
+                              style={{
+                                width: `${calculatedFire.percent}%`,
+                                background: calculatedFire.level === "Low" || calculatedFire.level === "Moderate" ? "var(--color-success)" : calculatedFire.level === "High" ? "var(--color-warning)" : calculatedFire.level === "Very High" ? "var(--color-primary)" : "var(--color-danger)"
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+
+                        <div className="fire-restrictions-box">
+                          <h6>Current Protocol: {calculatedFire.restriction}</h6>
+                          <p>
+                            {calculatedFire.level === "Low" && "Low wildfire danger. Standard Coronado National Forest campfire guidelines apply."}
+                            {calculatedFire.level === "Moderate" && "Moderate fire weather conditions. Campfires permitted in designated steel/concrete fire rings only."}
+                            {calculatedFire.level === "High" && "Campfires permitted only in designated campsite fire rings. Spark screens must remain closed."}
+                            {calculatedFire.level === "Very High" && "Strict fire restrictions in place. Campfires permitted in concrete rings ONLY from 6 PM to 10 PM. No charcoal grills."}
+                            {calculatedFire.level === "Extreme" && "ALL OPEN FIRES PROHIBITED. Only gas camp stoves with on/off safety valves are permitted. Keep shovel & extinguisher nearby."}
+                          </p>
                         </div>
                       </div>
-                      <div className="weather-detail-item">
-                        <div className="weather-detail-icon"><Thermometer className="w-5 h-5" /></div>
-                        <div className="weather-detail-info">
-                          <p>Cool Factor</p>
-                          <h5>-22° vs Tucson</h5>
-                        </div>
-                      </div>
-                      <div className="weather-detail-item">
-                        <div className="weather-detail-icon"><Layers className="w-5 h-5" /></div>
-                        <div className="weather-detail-info">
-                          <p>Observation</p>
-                          <h5>{loadingWeather ? "--" : weatherData?.current.observationTime}</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Fire Danger Widget */}
-                  <div className={`glass-panel fire-danger-card`}>
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <h3 style={{ fontFamily: "var(--font-title)" }}>Forest Fire Risk</h3>
-                        <Flame className={`w-5 h-5 ${fireDanger === "Extreme" ? "animate-pulse" : ""}`} style={{ color: "var(--color-primary)" }} />
-                      </div>
-                      
-                      <div className="fire-danger-badge-container">
-                        <span className={`fire-indicator-light bg-level-${fireDanger.toLowerCase().replace(" ", "-")}`}></span>
-                        <h4 className={`fire-danger-level-name level-${fireDanger.toLowerCase().replace(" ", "-")}`}>
-                          {fireDanger} Danger
-                        </h4>
-                      </div>
-
-                      <div className="gauge-track">
-                        <div 
-                          className="gauge-fill"
-                          style={{
-                            width: fireDanger === "High" ? "65%" : fireDanger === "Very High" ? "85%" : "100%",
-                            background: fireDanger === "High" ? "var(--color-warning)" : fireDanger === "Very High" ? "var(--color-primary)" : "var(--color-danger)"
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div className="fire-restrictions-box">
-                      <h6>Current Protocol: {fireRestriction}</h6>
-                      <p>
-                        {fireDanger === "High" && "Campfires permitted only in designated campsite fire rings. Spark screens must remain closed."}
-                        {fireDanger === "Very High" && "Strict fire restrictions in place. Campfires permitted in concrete rings ONLY from 6 PM to 10 PM. No charcoal grills."}
-                        {fireDanger === "Extreme" && "ALL OPEN FIRES PROHIBITED. Only gas camp stoves with on/off safety valves are permitted. Keep shovel & extinguisher nearby."}
-                      </p>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Quick Info Strip */}
@@ -705,6 +758,27 @@ export default function App() {
                     <div style={{ padding: "60px 0", textAlign: "center" }}>
                       <RefreshCw className="w-10 h-10 animate-spin text-primary" style={{ margin: "0 auto 12px" }} />
                       <p>Fetching real-time weather metrics from weather.gov...</p>
+                    </div>
+                  ) : errorWeather ? (
+                    <div style={{ padding: "40px", textAlign: "center", border: "1px dashed rgba(239, 68, 68, 0.3)", borderRadius: "12px", background: "rgba(239,68,68,0.02)" }}>
+                      <AlertOctagon className="w-16 h-16 text-danger" style={{ margin: "0 auto 16px" }} />
+                      <h4 style={{ fontFamily: "var(--font-title)", fontSize: "20px", color: "var(--color-text-bright)", marginBottom: "8px" }}>Live NOAA Connection Error</h4>
+                      <p style={{ fontSize: "14px", color: "var(--color-text-muted)", maxWidth: "500px", margin: "0 auto 16px", lineHeight: 1.5 }}>
+                        Could not synchronize with weather.gov grid services. This dashboard requires real live data and will not display offline mock variables.
+                      </p>
+                      <div style={{ padding: "10px", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: "6px", fontSize: "12px", color: "var(--color-danger)", fontFamily: "monospace", display: "inline-block", textAlign: "left", marginBottom: "16px" }}>
+                        Error Detail: {errorWeather}
+                      </div>
+                      <div>
+                        <button 
+                          onClick={refreshWeather}
+                          className="admin-btn active"
+                          style={{ margin: "0 auto", display: "inline-flex", alignItems: "center", gap: "8px" }}
+                        >
+                          <RefreshCw className="w-4 h-4" />
+                          Retry Live Sync
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <div>

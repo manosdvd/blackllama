@@ -233,33 +233,7 @@ export async function fetchLiveWeatherData() {
     };
 
   } catch (error) {
-    const duration = Date.now() - startTime;
-    console.warn("NWS API Fetch error. Using premium offline fallback weather data.", error);
-    // Return mock data but adjust timestamps/dates so they look dynamic
-    return {
-      ...MOCK_WEATHER_DATA,
-      current: {
-        ...MOCK_WEATHER_DATA.current,
-        observationTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      },
-      syncInfo: {
-        status: "fallback",
-        timestamp: new Date().toLocaleString(),
-        responseTimeMs: duration,
-        origin: "Offline Cache (Mt. Lemmon Seasonal Baseline)",
-        pointsUrl: `https://api.weather.gov/points/${LAT},${LON}`,
-        forecastUrl: "Local Fallback Stream (Static JSON)",
-        alertsUrl: "Local Fallback Stream (Static JSON)",
-        gridId: "TWC (Simulated)",
-        gridCoords: "99, 57",
-        rawMetadataJson: JSON.stringify({
-          error: error.message,
-          fallbackReason: "NOAA API connection failed, CORS origin blocked, or network offline. Serving high-fidelity baseline data.",
-          simulationMode: "Coronado National Forest Summer Baseline",
-          elevationTarget: "7,900 feet",
-          lastAttemptTime: new Date().toISOString()
-        }, null, 2)
-      }
-    };
+    console.error("NWS API Fetch error. Live weather feed is unavailable.", error);
+    throw new Error(`NOAA NWS API is unreachable: ${error.message}`);
   }
 }
