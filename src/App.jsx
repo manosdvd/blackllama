@@ -620,6 +620,16 @@ export default function App() {
                             ))}
                           </div>
                         )}
+                        <div style={{ marginTop: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "12px", textAlign: "right" }}>
+                          <a 
+                            href={weatherData?.syncInfo?.alertsUrl || "https://alerts.weather.gov/"} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            style={{ fontSize: "12px", color: "var(--color-primary)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                          >
+                            Source: NOAA NWS Alerts Feed <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
                       </div>
                     </>
                   )}
@@ -963,6 +973,16 @@ export default function App() {
                           <p>No severe meteorological watches, warnings, or red flag advisories are currently active for the Santa Catalina Ranger District coordinates.</p>
                         </div>
                       )}
+                      <div style={{ marginTop: "24px", textAlign: "right" }}>
+                        <a 
+                          href={weatherData?.syncInfo?.alertsUrl || "https://alerts.weather.gov/"} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          style={{ fontSize: "14px", color: "var(--color-primary)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                        >
+                          Source: NOAA NWS Alerts Feed <ExternalLink className="w-4 h-4" />
+                        </a>
+                      </div>
                     </div>
                   </>
                 )}
