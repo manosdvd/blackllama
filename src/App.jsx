@@ -9,6 +9,7 @@ import {
 import { fetchLiveWeatherData } from "./utils/weatherApi";
 import { MERIT_BADGES } from './data/meritBadges';
 import schedules from "./data/schedules.js";
+import CampfireEmbers from "./components/CampfireEmbers.jsx";
 
 // Campsite Data
 const CAMPSITES = [
@@ -345,6 +346,8 @@ export default function App() {
 
   return (
     <div className="app-container">
+      <CampfireEmbers />
+      
       {/* Sidebar - Desktop Layout */}
       <aside className={`sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
