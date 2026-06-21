@@ -4,7 +4,8 @@ import {
   AlertTriangle, Navigation, Tent, TreePine, MapPin, 
   Coffee, Users, Clock, Sunrise, BookOpen, Search, Compass,
   ChevronDown, ChevronUp, Check, Settings, Star, Award, Shield,
-  RefreshCw, CheckCircle2, AlertOctagon, HelpCircle, Anchor, Ship, Skull, SkullIcon
+  RefreshCw, CheckCircle2, AlertOctagon, HelpCircle, Anchor, Ship, Skull, SkullIcon,
+  Layers, ShieldAlert, ExternalLink, Thermometer, Phone, CheckSquare, Activity, Flame, CloudLightning, Info
 } from "lucide-react";
 import { fetchLiveWeatherData } from "./utils/weatherApi";
 import { MERIT_BADGES } from './data/meritBadges';
