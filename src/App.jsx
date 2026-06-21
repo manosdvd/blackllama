@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Menu, X, Map as MapIcon, Calendar, Cloud, Sun, Droplets, Wind,
   AlertTriangle, Navigation, Tent, TreePine, MapPin, 
   Coffee, Users, Clock, Sunrise, BookOpen, Search, Compass,
   ChevronDown, ChevronUp, Check, Settings, Star, Award, Shield,
   RefreshCw, CheckCircle2, AlertOctagon, HelpCircle, Anchor, Ship, Skull, SkullIcon,
-  Layers, ShieldAlert, ExternalLink, Thermometer, Phone, CheckSquare, Activity, Flame, CloudLightning, Info
+  Layers, ShieldAlert, ExternalLink, Thermometer, Phone, CheckSquare, Activity, Flame, CloudLightning, Info, Play, RotateCcw
 } from "lucide-react";
 import { fetchLiveWeatherData } from "./utils/weatherApi";
 import { MERIT_BADGES } from './data/meritBadges';
@@ -115,6 +115,16 @@ const SUMMER_SCHEDULE = {
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [weatherData, setWeatherData] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const heroVideoRef = useRef(null);
+  const [showVideoReplay, setShowVideoReplay] = useState(false);
+
+  const handleReplayVideo = () => {
+    setShowVideoReplay(false);
+    if (heroVideoRef.current) {
+      heroVideoRef.current.play();
+    }
+  };
   const [loadingWeather, setLoadingWeather] = useState(true);
   const [errorWeather, setErrorWeather] = useState(null);
   const [activeAlerts, setActiveAlerts] = useState([]);
@@ -133,7 +143,7 @@ export default function App() {
   const [scheduleDay, setScheduleDay] = useState("weekday");
 
   // Responsive UI States
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   // Merit Badge Survey States
   const [mbInterest, setMbInterest] = useState({});
@@ -554,22 +564,57 @@ export default function App() {
                 {/* Hero Banner Image */}
                 <div className="hero-banner-card" style={{ position: "relative", overflow: "hidden" }}>
                   <video 
+                    ref={heroVideoRef}
                     autoPlay 
-                    loop 
                     muted 
                     playsInline 
+                    onEnded={() => setShowVideoReplay(true)}
                     style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", top: 0, left: 0, zIndex: 0 }}
                   >
                     <source src="/title_card.mp4" type="video/mp4" />
                   </video>
+                  
                   <div className="hero-banner-overlay" style={{ position: "relative", zIndex: 1, height: "100%" }}>
+                    
+                    {showVideoReplay && (
+                      <button 
+                        onClick={handleReplayVideo}
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          background: "rgba(0,0,0,0.5)",
+                          border: "2px solid rgba(255,255,255,0.3)",
+                          backdropFilter: "blur(4px)",
+                          color: "white",
+                          padding: "16px",
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition: "var(--transition-smooth)"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "rgba(255,122,0,0.6)";
+                          e.currentTarget.style.borderColor = "var(--color-primary)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "rgba(0,0,0,0.5)";
+                          e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
+                        }}
+                      >
+                        <RotateCcw size={32} />
+                      </button>
+                    )}
                     <div style={{ display: "flex", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "8px" }}>
                       <Anchor className="w-8 h-8 text-primary" />
                       <h2>Welcome to Camp Lawton</h2>
                       <Anchor className="w-8 h-8 text-primary" />
                     </div>
                     <p style={{ fontSize: "18px", color: "var(--color-primary-light)", fontWeight: "bold" }}>2027 Season: Pirate Crew Adventures</p>
-                    <p style={{ marginTop: "4px" }}>Catalina Council property serving Scouting America on Mount Lemmon in the Coronado National Forest.</p>
+                    <p style={{ marginTop: "4px", maxWidth: "800px" }}>Celebrating over 100 years of Scouting adventures! Nestled in the stunning Coronado National Forest on Mount Lemmon, Camp Lawton offers an intimate, unforgettable summer camp experience.</p>
                   </div>
                 </div>
 
@@ -593,14 +638,14 @@ export default function App() {
                   <div className="glass-panel" style={{ borderTop: "4px solid var(--color-primary)" }}>
                     <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-primary-light)" }}>Welcome from the Program Director</h3>
                     <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.6, fontStyle: "italic", marginBottom: "12px" }}>
-                      "Ahoy Leaders! We are absolutely thrilled to welcome you back to a full week-long summer camp at Lawton. This year, we're diving deep into our Pirate Crew Adventures theme! Why the theme? Because camp shouldn't just be a merit badge factory. It's about building memories, exploring the outdoors, and having serious FUN while we do it. So grab your tricorn hats, rally your crew, and get ready for the best summer yet. I can't wait to see you up on the mountain!"
+                      "Ahoy Leaders! We are absolutely thrilled to welcome you back to a full week-long summer camp at Lawton! This year, we're diving deep into our Pirate Crew Adventures theme. Camp Lawton isn’t just a place to earn merit badges; it’s a place to build lifelong memories, forge friendships, and have serious FUN in the great outdoors. Our passionate, friendly staff is dedicated to making this your troop's best summer ever. So grab your tricorn hats, rally your crew, and get ready for an incredible adventure. I can't wait to see you up on the mountain!"
                     </p>
                     <p style={{ fontSize: "14px", fontWeight: "bold", textAlign: "right" }}>- Lexi</p>
                   </div>
                   <div className="glass-panel" style={{ borderTop: "4px solid var(--color-success)" }}>
                     <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-success)" }}>Welcome from the Camp Director</h3>
                     <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.6, fontStyle: "italic", marginBottom: "12px" }}>
-                      "Scouts and Scouters, welcome home to Camp Lawton. A tremendous amount of hard work has gone into preparing our historic 60-acre facility for your arrival. We take deep pride in the upkeep of this property so that your scouts have a safe, clean, and incredible environment to learn and grow. Our dedicated staff is ready to support your unit's goals, from rank advancement to leadership development. We're honored you chose to spend your summer with us."
+                      "Scouts and Scouters, welcome home to Camp Lawton! For over a century, our historic 60-acre camp has been a beacon of Scouting excellence. We take immense pride in providing a safe, clean, and breathtaking environment where your Scouts can learn, lead, and grow. Because of our intimate setting, your troop isn't just a number—you become part of our camp family. Our dedicated, experienced staff is ready to support your unit's unique goals, from rank advancement to leadership development. We're honored you've chosen to spend your summer with us, and we promise an experience you'll cherish forever."
                     </p>
                     <p style={{ fontSize: "14px", fontWeight: "bold", textAlign: "right" }}>- MaryLou</p>
                   </div>
