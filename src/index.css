@@ -1281,3 +1281,13 @@ html, body, #root {
   margin-top: 4px;
   line-height: 1.4;
 }
+
+/* Pirate Theme Subtleties */
+.pirate-accent {
+  border-left: 3px solid var(--color-warning) !important;
+  box-shadow: inset 2px 0 0 rgba(245, 158, 11, 0.2);
+}
+
+.pirate-text-glow {
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}

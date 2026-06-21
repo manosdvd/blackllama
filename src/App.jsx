@@ -4,7 +4,7 @@ import {
   AlertTriangle, Compass, MapPin, Phone, Calendar, CheckSquare, 
   Square, Map as MapIcon, BookOpen, Info, Search, Menu, X, 
   Activity, ExternalLink, Thermometer, ShieldAlert, Layers, 
-  RefreshCw, CheckCircle2, AlertOctagon, HelpCircle
+  RefreshCw, CheckCircle2, AlertOctagon, HelpCircle, Anchor, Ship, Skull, SkullIcon
 } from "lucide-react";
 import { fetchLiveWeatherData } from "./utils/weatherApi";
 
@@ -123,6 +123,9 @@ export default function App() {
   const [guideSubTab, setGuideSubTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [checkedItems, setCheckedItems] = useState({});
+  const [barkerStandard, setBarkerStandard] = useState({});
+  const [tribeRank, setTribeRank] = useState("Hunter");
+  const [faqOpen, setFaqOpen] = useState(null);
   const [scheduleDay, setScheduleDay] = useState("weekday");
 
   // Responsive UI States
@@ -151,16 +154,19 @@ export default function App() {
   }, []);
 
 
-
-  // Sync Checklist with localStorage
+  // Sync Checklist and Barker Standard with localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("camp_lawton_checklist");
-    if (stored) {
-      try {
-        setCheckedItems(JSON.parse(stored));
-      } catch (e) {
-        console.error("Failed to parse checklist states from local storage", e);
+    const storedChecklist = localStorage.getItem("camp_lawton_checklist");
+    const storedBarker = localStorage.getItem("camp_lawton_barker");
+    try {
+      if (storedChecklist) {
+        setCheckedItems(JSON.parse(storedChecklist));
       }
+      if (storedBarker) {
+        setBarkerStandard(JSON.parse(storedBarker));
+      }
+    } catch (e) {
+      console.error("Failed to parse local storage", e);
     }
   }, []);
 
@@ -175,6 +181,12 @@ export default function App() {
       setCheckedItems({});
       localStorage.removeItem("camp_lawton_checklist");
     }
+  };
+
+  const toggleBarkerStandard = (item) => {
+    const newChecked = { ...barkerStandard, [item]: !barkerStandard[item] };
+    setBarkerStandard(newChecked);
+    localStorage.setItem("camp_lawton_barker", JSON.stringify(newChecked));
   };
 
   // Helper: calculate total checked percentage
@@ -490,10 +502,48 @@ export default function App() {
             {activeTab === "dashboard" && (
               <div className="animate-slide-up">
                 {/* Hero Banner Image */}
-                <div className="hero-banner-card">
+                <div className="hero-banner-card" style={{ position: "relative" }}>
                   <div className="hero-banner-overlay">
-                    <h2>Welcome to Camp Lawton</h2>
-                    <p>Catalina Council property serving Scouting America on Mount Lemmon in the Coronado National Forest.</p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "8px" }}>
+                      <Anchor className="w-8 h-8 text-primary" />
+                      <h2>Welcome to Camp Lawton</h2>
+                      <Anchor className="w-8 h-8 text-primary" />
+                    </div>
+                    <p style={{ fontSize: "18px", color: "var(--color-primary-light)", fontWeight: "bold" }}>2027 Season: Pirate Crew Adventures</p>
+                    <p style={{ marginTop: "4px" }}>Catalina Council property serving Scouting America on Mount Lemmon in the Coronado National Forest.</p>
+                  </div>
+                </div>
+
+                {/* CRITICAL INFORMATION ALERT */}
+                <div style={{ padding: "16px", background: "rgba(239,68,68,0.1)", border: "2px solid var(--color-danger)", borderRadius: "8px", marginBottom: "24px" }}>
+                  <h3 style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-danger)", fontFamily: "var(--font-title)", marginBottom: "12px" }}>
+                    <ShieldAlert className="w-5 h-5 animate-pulse" />
+                    CRITICAL INFORMATION — READ BEFORE YOU MAKE PLANS
+                  </h3>
+                  <ul style={{ listStyleType: "disc", paddingLeft: "24px", color: "var(--color-text-bright)", fontSize: "14px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <li><strong>NO AQUATICS AND LIMITED FIREARMS:</strong> Camp Lawton has no pool or waterfront and the USFS has limited us to pellet rifles for the Rifle merit badge.</li>
+                    <li><strong>FIRE:</strong> Fire restrictions may prohibit campfires at any time — check daily with staff.</li>
+                    <li><strong>VEHICLES:</strong> Not permitted inside camp beyond the parking area. Plan to carry your gear. Back into spaces.</li>
+                    <li><strong>MEDICAL:</strong> All prescription meds must be surrendered to the Medic in original bottles. Forms A, B, and C required for &gt; 3 days.</li>
+                    <li><strong>SAFEGUARDING YOUTH:</strong> All adults must have current SYT. Two-deep leadership required. No 1-on-1 adult/youth contact.</li>
+                  </ul>
+                </div>
+
+                {/* Welcome Letters */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }} className="responsive-split">
+                  <div className="glass-panel" style={{ borderTop: "4px solid var(--color-primary)" }}>
+                    <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-primary-light)" }}>Welcome from the Program Director</h3>
+                    <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.6, fontStyle: "italic", marginBottom: "12px" }}>
+                      "Ahoy Leaders! We are absolutely thrilled to welcome you back to a full week-long summer camp at Lawton. This year, we're diving deep into our Pirate Crew Adventures theme! Why the theme? Because camp shouldn't just be a merit badge factory. It's about building memories, exploring the outdoors, and having serious FUN while we do it. So grab your tricorn hats, rally your crew, and get ready for the best summer yet. I can't wait to see you up on the mountain!"
+                    </p>
+                    <p style={{ fontSize: "14px", fontWeight: "bold", textAlign: "right" }}>- Lexi</p>
+                  </div>
+                  <div className="glass-panel" style={{ borderTop: "4px solid var(--color-success)" }}>
+                    <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-success)" }}>Welcome from the Camp Director</h3>
+                    <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.6, fontStyle: "italic", marginBottom: "12px" }}>
+                      "Scouts and Scouters, welcome home to Camp Lawton. A tremendous amount of hard work has gone into preparing our historic 60-acre facility for your arrival. We take deep pride in the upkeep of this property so that your scouts have a safe, clean, and incredible environment to learn and grow. Our dedicated staff is ready to support your unit's goals, from rank advancement to leadership development. We're honored you chose to spend your summer with us."
+                    </p>
+                    <p style={{ fontSize: "14px", fontWeight: "bold", textAlign: "right" }}>- MaryLou</p>
                   </div>
                 </div>
 
@@ -1206,37 +1256,52 @@ export default function App() {
             {/* 4. LEADER'S GUIDE VIEW */}
             {activeTab === "guide" && (
               <div className="animate-slide-up leaders-guide-container">
-                <div className="guide-subtabs">
-                  <button onClick={() => setGuideSubTab("overview")} className={`guide-subtab-btn ${guideSubTab === "overview" ? "active" : ""}`}>Overview & Check-In</button>
+                <div className="guide-subtabs" style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center", marginBottom: "20px" }}>
+                  <button onClick={() => setGuideSubTab("overview")} className={`guide-subtab-btn ${guideSubTab === "overview" ? "active" : ""}`}>Welcome & Check-In</button>
+                  <button onClick={() => setGuideSubTab("policies")} className={`guide-subtab-btn ${guideSubTab === "policies" ? "active" : ""}`}>Policies & Safety</button>
+                  <button onClick={() => setGuideSubTab("schedule")} className={`guide-subtab-btn ${guideSubTab === "schedule" ? "active" : ""}`}>Schedule & Logistics</button>
+                  <button onClick={() => setGuideSubTab("programs")} className={`guide-subtab-btn ${guideSubTab === "programs" ? "active" : ""}`}>Program Highlights</button>
+                  <button onClick={() => setGuideSubTab("awards")} className={`guide-subtab-btn ${guideSubTab === "awards" ? "active" : ""}`}>Awards & Recognition</button>
+                  <button onClick={() => setGuideSubTab("faq")} className={`guide-subtab-btn ${guideSubTab === "faq" ? "active" : ""}`}>FAQ</button>
                   <button onClick={() => setGuideSubTab("checklist")} className={`guide-subtab-btn ${guideSubTab === "checklist" ? "active" : ""}`}>Packing Checklist</button>
-                  <button onClick={() => setGuideSubTab("schedule")} className={`guide-subtab-btn ${guideSubTab === "schedule" ? "active" : ""}`}>Daily Schedule</button>
-                  <button onClick={() => setGuideSubTab("programs")} className={`guide-subtab-btn ${guideSubTab === "programs" ? "active" : ""}`}>Program & Merit Badges</button>
-                  <button onClick={() => setGuideSubTab("safety")} className={`guide-subtab-btn ${guideSubTab === "safety" ? "active" : ""}`}>Health & Safety</button>
                 </div>
 
                 <div className="guide-content-panel glass-panel">
-                  {/* GUIDE: OVERVIEW */}
+                  {/* GUIDE: OVERVIEW / WELCOME */}
                   {guideSubTab === "overview" && (
                     <div className="animate-fade-in">
-                      <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-text-bright)" }}>
-                        Overview & Check-In Procedures
-                      </h3>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+                        <Anchor className="w-6 h-6 text-primary" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Welcome & Check-In Procedures
+                        </h3>
+                      </div>
                       
+                      <div style={{ marginBottom: "24px", padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", borderLeft: "4px solid var(--color-primary)" }}>
+                        <h4 style={{ color: "var(--color-primary-light)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Welcome to Camp Lawton, est. 1921</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+                          Nestled in the Catalina Mountains, Camp Lawton is the premier scout camp of the Catalina Council. We are fully accredited by the National Camp Accreditation Program (NCAP) and operate under a strict Special Use Permit with the US Forest Service. Please preserve the magic of this place by strictly adhering to Leave No Trace principles.
+                        </p>
+                      </div>
+
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "20px" }} className="responsive-split">
                         <div>
-                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Check-In Details</h4>
+                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Arrival & Directions</h4>
                           <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-muted)", display: "flex", flexDirection: "column", gap: "8px" }}>
-                            <li><strong>Arrival Time:</strong> Sunday between 1:00 PM and 3:00 PM. Please do not arrive early as staff are completing weekly property prep.</li>
-                            <li><strong>Arrival Depot:</strong> Park in main lot. Only one unit trailer vehicle is permitted to enter the loop road to drop gear at the campsite.</li>
-                            <li><strong>Medical Binder:</strong> Present all medical forms (Parts A, B, and C) completed within the last 12 calendar months and signed by a licensed physician.</li>
+                            <li><strong>Arrival Time:</strong> Sunday between 1:00 PM and 3:00 PM. No early arrivals! Staff are prepping the property.</li>
+                            <li><strong>Directions:</strong> Take Catalina Highway up Mount Lemmon. Turn right at the USFS Palisade Visitor Center onto Organization Ridge Road.</li>
+                            <li><strong>Parking:</strong> Park immediately in the main lot. Back into all spaces to facilitate emergency evacuation.</li>
+                            <li><strong>Gear Drop:</strong> Only ONE unit trailer or vehicle is permitted on the loop road to drop gear at your campsite. All other vehicles must stay in the lot.</li>
                           </ul>
                         </div>
                         <div>
-                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Check-Out Details</h4>
+                          <h4 style={{ color: "var(--color-primary-light)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Check-In Process</h4>
                           <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-muted)", display: "flex", flexDirection: "column", gap: "8px" }}>
-                            <li><strong>Time:</strong> Saturday morning by 9:30 AM.</li>
-                            <li><strong>Inspection:</strong> Campsite commissioners will inspect tent structures, fire zones, and clean latrines.</li>
-                            <li><strong>Medications:</strong> Retrieve all unit medications and physical health binders from the Health Lodge before driving out.</li>
+                            <li><strong>Step 1:</strong> Unit Leader heads to the Camp Office. Bring the Unit Roster and fee settlement.</li>
+                            <li><strong>Step 2:</strong> Present all medical forms (A, B, C) in a single alphabetical binder to the Health Lodge.</li>
+                            <li><strong>Step 3:</strong> Turn in all prescription medications to the Medic in their original containers.</li>
+                            <li><strong>Step 4:</strong> Meet your Troop Guide for a campsite tour and latrine orientation.</li>
+                            <li><strong>Step 5:</strong> Proceed to the parade ground for the 5:00 PM safety briefing.</li>
                           </ul>
                         </div>
                       </div>
@@ -1244,7 +1309,7 @@ export default function App() {
                       <div className="fire-restrictions-box" style={{ background: "rgba(16,185,129,0.04)", border: "1px solid rgba(16,185,129,0.15)" }}>
                         <h5 style={{ color: "var(--color-success)", fontWeight: 700, marginBottom: "4px" }}>Scouter Code of Conduct</h5>
                         <p style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>
-                          All attendees (youth and adults) are expected to live by the Scout Oath and Law. Leave No Trace principles must be practiced at all times. Liquid or gas fuels are preferred. Open wood campfires are subject to daily restrictions based on fire weather conditions.
+                          All attendees (youth and adults) are expected to live by the Scout Oath and Law. Keep the noise down after Taps (10:00 PM). Ensure your crew's behavior honors the uniform.
                         </p>
                       </div>
                     </div>
@@ -1299,23 +1364,37 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* GUIDE: DAILY SCHEDULE */}
+                  {/* GUIDE: DAILY SCHEDULE & LOGISTICS */}
                   {guideSubTab === "schedule" && (
                     <div className="animate-fade-in">
-                      <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-text-bright)" }}>
-                        Camp Lawton Daily Schedule
-                      </h3>
-                      <p style={{ fontSize: "13px", color: "var(--color-text-muted)", marginBottom: "20px" }}>
-                        Uniform of the day is generally activity uniform (Class B / Scout t-shirt) for daylight training, and field uniform (Class A) for dinner assemblies and evening campfires.
-                      </p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
+                        <Ship className="w-6 h-6 text-primary" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Schedule & Logistics
+                        </h3>
+                      </div>
+
+                      {/* PIRATE LINGO */}
+                      <div style={{ marginBottom: "24px", padding: "16px", background: "rgba(255,255,255,0.03)", borderRadius: "8px", borderLeft: "4px solid var(--color-warning)" }}>
+                        <h4 style={{ color: "var(--color-warning)", fontSize: "16px", marginBottom: "8px", fontWeight: "600" }}>Pirate Crew Lingo</h4>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "13px", color: "var(--color-text-bright)" }}>
+                          <div><strong>The Fleet:</strong> All troops at camp</div>
+                          <div><strong>Your Ship:</strong> Your Troop/Campsite</div>
+                          <div><strong>Captain:</strong> Senior Patrol Leader (SPL)</div>
+                          <div><strong>First Mate:</strong> Assistant SPL</div>
+                          <div><strong>The Admiral:</strong> Scoutmaster</div>
+                          <div><strong>The Galley:</strong> Dining Hall</div>
+                          <div><strong>The Brig:</strong> Health Lodge</div>
+                        </div>
+                      </div>
 
                       <div className="schedule-day-tabs">
                         <button onClick={() => setScheduleDay("sunday")} className={`schedule-day-btn ${scheduleDay === "sunday" ? "active" : ""}`}>Sunday Arrival</button>
-                        <button onClick={() => setScheduleDay("weekday")} className={`schedule-day-btn ${scheduleDay === "weekday" ? "active" : ""}`}>Mon - Fri Rotations</button>
-                        <button onClick={() => setScheduleDay("saturday")} className={`schedule-day-btn ${scheduleDay === "saturday" ? "active" : ""}`}>Saturday Checkout</button>
+                        <button onClick={() => setScheduleDay("weekday")} className={`schedule-day-btn ${scheduleDay === "weekday" ? "active" : ""}`}>Standard Day (Mon-Thu)</button>
+                        <button onClick={() => setScheduleDay("saturday")} className={`schedule-day-btn ${scheduleDay === "saturday" ? "active" : ""}`}>Saturday Departure</button>
                       </div>
 
-                      <div className="timeline">
+                      <div className="timeline" style={{ marginBottom: "24px" }}>
                         {SUMMER_SCHEDULE[scheduleDay].map((slot, idx) => (
                           <div key={idx} className="timeline-item">
                             <span className="timeline-time">{slot.time}</span>
@@ -1326,85 +1405,363 @@ export default function App() {
                           </div>
                         ))}
                       </div>
+
+                      {/* LEADER LOGISTICS */}
+                      <h4 style={{ color: "var(--color-primary-light)", fontSize: "18px", marginTop: "10px", marginBottom: "12px", fontFamily: "var(--font-title)" }}>Leader Logistics</h4>
+                      <div className="glass-panel">
+                        <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-muted)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                          <li><strong>SPL (Captain's) Meeting:</strong> Every day at 1:15 PM at the Galley (Dining Hall). The SPL and Scoutmaster must attend.</li>
+                          <li><strong>Leader Coffee:</strong> Fresh coffee is available on the Dining Hall porch every morning at 6:30 AM.</li>
+                          <li><strong>Communication:</strong> WiFi is available near the Camp Office for adults only. Cell service is extremely spotty. Emergency radios (FRS Channel 5) are monitored by staff 24/7.</li>
+                          <li><strong>Departure:</strong> Saturday morning check-out begins at 7:00 AM. A camp commissioner will inspect your latrine and fire ring. You will not receive your health binder until the inspection is signed off.</li>
+                        </ul>
+                      </div>
                     </div>
                   )}
 
-                  {/* GUIDE: PROGRAMS & MERIT BADGES */}
+                  {/* GUIDE: PROGRAM HIGHLIGHTS */}
                   {guideSubTab === "programs" && (
-                    <div className="animate-fade-in">
-                      <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "12px", color: "var(--color-text-bright)" }}>
-                        Program Areas & Camp Merit Badges
-                      </h3>
-                      <p style={{ fontSize: "13px", color: "var(--color-text-muted)", marginBottom: "20px" }}>
-                        Staff instruction operates across six specialized program areas on Mt. Lemmon:
-                      </p>
+                    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+                        <Compass className="w-6 h-6 text-primary" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Program Highlights
+                        </h3>
+                      </div>
 
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }} className="responsive-split">
-                        <div className="glass-card-interactive" style={{ cursor: "default" }}>
-                          <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "6px" }}>Shooting Sports</h4>
-                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.4 }}>
-                            Includes archery range, air rifle range, and shotgun shooting. Merit badges offered: <strong>Archery, Rifle Shooting, Shotgun Shooting</strong>. Safety briefs are mandatory on Sunday.
+                      {/* Evening Programs */}
+                      <div className="glass-panel" style={{ borderLeft: "4px solid #a855f7" }}>
+                        <h4 style={{ color: "#a855f7", fontWeight: 700, marginBottom: "12px", fontSize: "18px" }}>Evening Programs</h4>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                          <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "6px" }}>
+                            <strong style={{ color: "var(--color-text-bright)" }}>Sunday:</strong> Opening Campfire. Wear field uniform. Meet at parade ground.
+                          </div>
+                          <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "6px" }}>
+                            <strong style={{ color: "var(--color-text-bright)" }}>Monday:</strong> Vespers & Interfaith Service at the Chapel.
+                          </div>
+                          <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "6px" }}>
+                            <strong style={{ color: "var(--color-text-bright)" }}>Wednesday:</strong> Pirate Feast (Root beer floats & cobbler in the Galley).
+                          </div>
+                          <div style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "6px" }}>
+                            <strong style={{ color: "var(--color-text-bright)" }}>Friday:</strong> Closing Campfire & OA Callout.
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Campsite Competitions */}
+                      <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-warning)" }}>
+                        <h4 style={{ color: "var(--color-warning)", fontWeight: 700, marginBottom: "12px", fontSize: "18px" }}>Campsite Competitions</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text)", marginBottom: "12px", lineHeight: 1.5 }}>
+                          Throughout the week, units compete for the coveted "Golden Anchor" by earning points in the following events:
+                        </p>
+                        <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-muted)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                          <li><strong>Pieces of Eight Hunt:</strong> Staff hide 8 gold coins around the property daily. Bring them to the office for points.</li>
+                          <li><strong>Knot-Tying Relay:</strong> Tuesday at 4:00 PM at Scoutcraft.</li>
+                          <li><strong>Walk the Plank:</strong> Thursday at 4:00 PM. A balance and agility obstacle course on the parade ground.</li>
+                        </ul>
+                      </div>
+
+                      {/* Special Programs */}
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }} className="responsive-split">
+                        <div className="glass-panel" style={{ borderTop: "3px solid var(--color-danger)" }}>
+                          <h5 style={{ color: "var(--color-danger)", fontWeight: 700, marginBottom: "8px", fontSize: "16px" }}>Captain's Challenge</h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Scoutmasters can challenge any staff member to a dual of their choosing (e.g., fire-building, knot tying, trivia) on Thursday evening. Winner takes home a specialized "Pirate Duel" patch.
                           </p>
                         </div>
-                        <div className="glass-card-interactive" style={{ cursor: "default" }}>
-                          <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "6px" }}>Aquatics (Swimming Pool)</h4>
-                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.4 }}>
-                            Camp Lawton features an outdoor swimming pool. Swimmers are classified during Sunday check-in. Merit badges offered: <strong>Swimming, Lifesaving</strong>. Afternoon free-swim sessions are open to all.
-                          </p>
-                        </div>
-                        <div className="glass-card-interactive" style={{ cursor: "default" }}>
-                          <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "6px" }}>Ecology & Nature</h4>
-                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.4 }}>
-                            Study the unique flora and fauna of the Coronado National Forest. Merit badges offered: <strong>Environmental Science, Forestry, Weather, Reptile Study</strong>.
-                          </p>
-                        </div>
-                        <div className="glass-card-interactive" style={{ cursor: "default" }}>
-                          <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "6px" }}>Outdoor Skills (Scoutcraft)</h4>
-                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.4 }}>
-                            Knot tying, pioneering, and wilderness survival. Merit badges offered: <strong>Camping, Pioneering, Wilderness Survival</strong>. Also coordinates the "Trail to First Class" program for new scouts.
+                        <div className="glass-panel" style={{ borderTop: "3px solid var(--color-primary-light)" }}>
+                          <h5 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "8px", fontSize: "16px" }}>Astronomy Talk</h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Given our proximity to the Mount Lemmon Observatory, a guest astronomer will bring telescopes to the parade ground on Tuesday night (weather permitting) for a deep-sky viewing session.
                           </p>
                         </div>
                       </div>
                     </div>
                   )}
 
-                  {/* GUIDE: HEALTH & SAFETY */}
-                  {guideSubTab === "safety" && (
-                    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                      <div>
-                        <h3 style={{ fontFamily: "var(--font-title)", marginBottom: "6px", color: "var(--color-text-bright)" }}>
-                          Health & Safety Guidelines
+                  {/* GUIDE: AWARDS & RECOGNITION */}
+                  {guideSubTab === "awards" && (
+                    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+                        <SkullIcon className="w-6 h-6 text-warning" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Awards & Recognition
                         </h3>
-                        <p style={{ fontSize: "13px", color: "var(--color-text-muted)" }}>
-                          Operating at high altitudes in a national forest wilderness requires proactive safety management.
+                      </div>
+
+                      {/* Tribe of Papago */}
+                      <div className="glass-panel" style={{ borderTop: "4px solid var(--color-primary-light)" }}>
+                        <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "8px", fontSize: "18px" }}>The Tribe of Papago</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text-muted)", marginBottom: "16px", lineHeight: 1.5 }}>
+                          Camp Lawton's historic honor camping society. The primary role is recognition of Scouts returning to camp for multiple years. Select your rank to view the requirements:
+                        </p>
+                        
+                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "16px" }}>
+                          {["Hunter", "Warrior", "Medicine Man", "Chief", "Elder", "Guide"].map(rank => (
+                            <button 
+                              key={rank}
+                              onClick={() => setTribeRank(rank)}
+                              style={{ 
+                                padding: "6px 12px", 
+                                borderRadius: "4px", 
+                                background: tribeRank === rank ? "var(--color-primary)" : "rgba(255,255,255,0.05)",
+                                color: tribeRank === rank ? "#fff" : "var(--color-text-bright)",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                cursor: "pointer",
+                                fontSize: "13px"
+                              }}
+                            >
+                              {rank}
+                            </button>
+                          ))}
+                        </div>
+
+                        <div style={{ background: "rgba(0,0,0,0.2)", padding: "16px", borderRadius: "8px" }}>
+                          {tribeRank === "Hunter" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li>Earn one merit badge or "Graduate" at Model Camp.</li>
+                              <li>Hike one camp trail (Mt. Bigalow, Eagle Trail, Compass Course, etc.)</li>
+                              <li>Show Scout spirit.</li>
+                            </ul>
+                          )}
+                          {tribeRank === "Warrior" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li>Participate in a one hour service project for Camp Lawton.</li>
+                              <li>Earn two merit badges or "Graduate" Model Camp.</li>
+                              <li>Hike one camp trail.</li>
+                              <li>Show Scout Spirit.</li>
+                            </ul>
+                          )}
+                          {tribeRank === "Medicine Man" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li>Complete two hours of service projects.</li>
+                              <li>Earn two merit badges.</li>
+                              <li>Demonstrate leadership by volunteering in a program area for one hour during camp (or tutor scouts for 3 hours).</li>
+                              <li>Hike two camp trails.</li>
+                              <li>Show Scout spirit.</li>
+                            </ul>
+                          )}
+                          {tribeRank === "Chief" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li>Complete three hours of service projects.</li>
+                              <li>Earn three merit badges.</li>
+                              <li>Demonstrate leadership by volunteering in a program area for one hour AND tutor scouts for 1 hour.</li>
+                              <li>Hike two camp trails.</li>
+                              <li>Show Scout spirit.</li>
+                            </ul>
+                          )}
+                          {tribeRank === "Elder" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li><em>Adult leaders or Fifth year in Tribe</em></li>
+                              <li>Encourage and support Scouts in earning rank in the Tribe of Papago.</li>
+                              <li>Complete three hours of service projects.</li>
+                              <li>Hike one camp trail.</li>
+                              <li>Volunteer to help in a program area for at least one hour.</li>
+                            </ul>
+                          )}
+                          {tribeRank === "Guide" && (
+                            <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-bright)", display: "flex", flexDirection: "column", gap: "8px" }}>
+                              <li><em>Staff members</em></li>
+                              <li>Work on staff for more than one week.</li>
+                              <li>Lead or assist in leading a Tribe of Papago service project.</li>
+                              <li>Teach at least 10 Scouts over a week.</li>
+                              <li>Visit a campsite at least once a day.</li>
+                              <li>Learn about the purposes of the Tribe of Papago and participate in a ceremony.</li>
+                              <li>Obtain recommendations from a Scoutmaster and Area Director.</li>
+                              <li>Attend Chapel service for at least 2 weeks.</li>
+                              <li>Lead a unit on one camp trail.</li>
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* The Barker Standard */}
+                      <div className="glass-panel" style={{ borderTop: "4px solid var(--color-warning)" }}>
+                        <h4 style={{ color: "var(--color-warning)", fontWeight: 700, marginBottom: "8px", fontSize: "18px" }}>The Barker Standard</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text-muted)", marginBottom: "16px", lineHeight: 1.5 }}>
+                          Named for legendary scout leader Roy J. Barker (1924-2012). Fulfill these 9 requirements to be recognized as an honor troop and earn a special ribbon for your troop flag. Your progress is saved to your device.
+                        </p>
+                        
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                          {[
+                            "Request and pass a Uniform Inspection by a Senior Staff member",
+                            "Request and pass a Campsite Inspection by a Senior Staff member",
+                            "Lead a Flag Ceremony",
+                            "Sing a Song at a camp wide activity",
+                            "Perform a skit, song, or story at the campwide closing campfire",
+                            "Volunteer for cleanup duty in the Mess Hall and/or shower facilities",
+                            "Complete a service project while in camp",
+                            "Demonstrate consistent Scout Spirit, Live the Scout Oath, Law, Motto, Slogan, and Outdoor Code throughout the week",
+                            "Request and complete the Barker Standard application form"
+                          ].map((req, i) => (
+                            <div 
+                              key={i} 
+                              onClick={() => toggleBarkerStandard(`req_${i}`)}
+                              style={{ 
+                                display: "flex", 
+                                alignItems: "center", 
+                                gap: "12px", 
+                                padding: "12px", 
+                                background: barkerStandard[`req_${i}`] ? "rgba(16,185,129,0.1)" : "rgba(255,255,255,0.03)",
+                                border: barkerStandard[`req_${i}`] ? "1px solid rgba(16,185,129,0.3)" : "1px solid rgba(255,255,255,0.1)",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                transition: "all 0.2s ease"
+                              }}
+                            >
+                              <div style={{ 
+                                width: "24px", 
+                                height: "24px", 
+                                borderRadius: "4px", 
+                                border: barkerStandard[`req_${i}`] ? "2px solid var(--color-success)" : "2px solid rgba(255,255,255,0.3)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                background: barkerStandard[`req_${i}`] ? "var(--color-success)" : "transparent",
+                                flexShrink: 0
+                              }}>
+                                {barkerStandard[`req_${i}`] && <CheckSquare className="w-4 h-4 text-dark" />}
+                              </div>
+                              <span style={{ 
+                                fontSize: "14px", 
+                                color: barkerStandard[`req_${i}`] ? "var(--color-success)" : "var(--color-text-bright)",
+                                textDecoration: barkerStandard[`req_${i}`] ? "line-through" : "none",
+                                opacity: barkerStandard[`req_${i}`] ? 0.8 : 1
+                              }}>
+                                {i + 1}. {req}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* GUIDE: POLICIES & SAFETY */}
+                  {guideSubTab === "policies" && (
+                    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <ShieldAlert className="w-6 h-6 text-danger" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Camp Policies & Safety
+                        </h3>
+                      </div>
+                      
+                      <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-primary)" }}>
+                        <h4 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "8px" }}>USFS Special Use Permit</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.5 }}>
+                          Camp Lawton operates on land leased from the United States Forest Service. We are guests in the Coronado National Forest. All units must strictly practice <strong>Leave No Trace (LNT)</strong>. No trenching tents, no cutting live trees, and absolutely no littering. You carry it in, you carry it out.
                         </p>
                       </div>
 
-                      <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px" }}>
-                        <h5 style={{ color: "var(--color-warning)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
-                          <Layers className="w-4 h-4" /> Elevation Preparations (7,900 ft)
-                        </h5>
-                        <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
-                          Temperatures are typically 20 to 25 degrees cooler than in Tucson, but the air is much thinner. Dehydration occurs rapidly. Leaders must ensure Scouts drink at least one full water bottle (32oz) every hour. Limit strenuous hiking on the first 24 hours of arrival to allow acclimatization.
+                      <div className="glass-panel" style={{ borderLeft: "4px solid var(--color-danger)" }}>
+                        <h4 style={{ color: "var(--color-danger)", fontWeight: 700, marginBottom: "8px" }}>Safeguarding Youth Guidelines</h4>
+                        <p style={{ fontSize: "14px", color: "var(--color-text)", lineHeight: 1.5, marginBottom: "8px" }}>
+                          Camp Lawton strictly enforces BSA's Safeguarding Youth policies:
                         </p>
+                        <ul style={{ paddingLeft: "18px", fontSize: "14px", color: "var(--color-text-muted)", display: "flex", flexDirection: "column", gap: "6px" }}>
+                          <li><strong>Two-Deep Leadership:</strong> Minimum of two registered adult leaders over 21 required at all times.</li>
+                          <li><strong>No 1-on-1 Contact:</strong> Private interactions between adults and youth (other than their own child) are strictly prohibited.</li>
+                          <li><strong>Privacy:</strong> Separate accommodations for adults and youth. Separate shower times.</li>
+                          <li>All adults must have current SYT (Safeguarding Youth Training) certification on file.</li>
+                        </ul>
                       </div>
 
-                      <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px", borderLeftColor: "var(--color-primary)" }}>
-                        <h5 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
-                          <Flame className="w-4 h-4" /> Bear Aware Protocols
-                        </h5>
-                        <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
-                          Mt. Lemmon is active black bear habitat. No food, candy, gum, soda, or scented items (deodorant, toothpaste, chapstick) may ever be kept inside tents. Troops must lock all foodstuffs inside their unit trailer or the camp's bear-proof steel storage boxes.
-                        </p>
+                      <h4 style={{ color: "var(--color-text-bright)", fontSize: "18px", marginTop: "10px", marginBottom: "0px", fontFamily: "var(--font-title)" }}>Mountain Wildlife & Hazards</h4>
+                      
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }} className="responsive-split">
+                        <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px" }}>
+                          <h5 style={{ color: "var(--color-warning)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <Flame className="w-4 h-4" /> Black Bears
+                          </h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
+                            No food or smellables in tents ever. Lock all food in trailers or bear boxes. If encountered, group up, make noise, and back away slowly. Do not run.
+                          </p>
+                        </div>
+                        <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px", borderLeftColor: "var(--color-primary)" }}>
+                          <h5 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <Activity className="w-4 h-4" /> Mountain Lions
+                          </h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
+                            Avoid hiking alone at dawn or dusk. If encountered, make yourself look large, maintain eye contact, and shout loudly.
+                          </p>
+                        </div>
+                        <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px", borderLeftColor: "var(--color-danger)" }}>
+                          <h5 style={{ color: "var(--color-danger)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <ShieldAlert className="w-4 h-4" /> Rattlesnakes
+                          </h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
+                            Stay on marked trails. Do not reach into blind crevices or step over logs without looking. Do NOT attempt to kill or move the snake—notify staff immediately.
+                          </p>
+                        </div>
+                        <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px", borderLeftColor: "#a855f7" }}>
+                          <h5 style={{ color: "#a855f7", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+                            <CloudLightning className="w-4 h-4" /> Emergencies
+                          </h5>
+                          <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
+                            <strong>Bell Rings:</strong> Report to parade ground immediately.<br />
+                            <strong>Active Threat:</strong> Run, Hide, Fight. Do NOT report to parade ground. Listen for megaphone announcements.
+                          </p>
+                        </div>
                       </div>
+                    </div>
+                  )}
 
-                      <div className="weather-alert-card watch" style={{ margin: 0, padding: "16px", borderLeftColor: "var(--color-danger)" }}>
-                        <h5 style={{ color: "var(--color-danger)", fontWeight: 700, marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
-                          <AlertTriangle className="w-4 h-4" /> Monsoon & Lightning Policy
-                        </h5>
-                        <p style={{ fontSize: "13px", color: "var(--color-text)", lineHeight: 1.4 }}>
-                          During July and August, sudden severe thunderstorms frequently hit Mt. Lemmon in the afternoon. If lightning strikes within 10 miles of camp (heard as thunder), all outdoor program zones (swimming pool, shooting ranges) are suspended. All troops must report immediately to the Dining Hall for shelter until given the all-clear by the Camp Director.
-                        </p>
+                  {/* GUIDE: FAQ */}
+                  {guideSubTab === "faq" && (
+                    <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+                        <Info className="w-6 h-6 text-primary" />
+                        <h3 style={{ fontFamily: "var(--font-title)", color: "var(--color-text-bright)", margin: 0 }}>
+                          Frequently Asked Questions
+                        </h3>
+                      </div>
+                      
+                      <div className="glass-panel" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                        <details style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                          <summary style={{ fontWeight: "700", color: "var(--color-primary-light)", cursor: "pointer", outline: "none", fontSize: "15px" }}>
+                            How many merit badges can a scout earn in a week?
+                          </summary>
+                          <p style={{ marginTop: "12px", fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            That depends on how much the scout likes their free time… and sanity. Technically there are 6 sessions in a day. A scout willing to face the gauntlet and some clever scheduling could probably sign up for 6 badges. We don’t recommend that though. That is a very heavy load for a week of what’s supposed to be fun.
+                          </p>
+                        </details>
+
+                        <details style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                          <summary style={{ fontWeight: "700", color: "var(--color-primary-light)", cursor: "pointer", outline: "none", fontSize: "15px" }}>
+                            How big is the camp?
+                          </summary>
+                          <p style={{ marginTop: "12px", fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Camp Lawton is roughly 60 acres. That’s about 45 football fields, 0.1 square miles. That’s not much, but with the thinner air, it feels like more when you’re walking across it. We believe our small size is an advantage, allowing for a more intimate experience where scouts get to know our staff personally.
+                          </p>
+                        </details>
+
+                        <details style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                          <summary style={{ fontWeight: "700", color: "var(--color-primary-light)", cursor: "pointer", outline: "none", fontSize: "15px" }}>
+                            Why no Aquatics program?
+                          </summary>
+                          <p style={{ marginTop: "12px", fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Our pool, which we kept functioning until 2024, was a relic of a bygone time. We finally reached the point where it was more trouble than it was worth. Will we never have a pool again? Never say never. A generous donation and approval from the Forest Service could certainly get us back in the Aquatics Program game.
+                          </p>
+                        </details>
+
+                        <details style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                          <summary style={{ fontWeight: "700", color: "var(--color-primary-light)", cursor: "pointer", outline: "none", fontSize: "15px" }}>
+                            Why the BB Guns?
+                          </summary>
+                          <p style={{ marginTop: "12px", fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Technically they’re Airsoft Rifles. We are in a relatively congested area on leased National Forest land. The decision was made in the 90s that the sound and environmental impact of .22 bullets was not sustainable. Switching to low power rifles keeps everyone happy and saves scouts from dealing with noise, recoil, and ammo fees.
+                          </p>
+                        </details>
+
+                        <details style={{ background: "rgba(0,0,0,0.2)", padding: "12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.1)" }}>
+                          <summary style={{ fontWeight: "700", color: "var(--color-primary-light)", cursor: "pointer", outline: "none", fontSize: "15px" }}>
+                            What if I can’t register my scouts for merit badges online?
+                          </summary>
+                          <p style={{ marginTop: "12px", fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5 }}>
+                            Don’t worry about it. Contact us in advance if you can, but when you arrive at camp, we’ll do our best to correct the issue or find a good alternative. We won’t leave any scout out in the cold.
+                          </p>
+                        </details>
                       </div>
                     </div>
                   )}
