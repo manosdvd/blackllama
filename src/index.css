@@ -483,6 +483,7 @@ html, body, #root {
 .hero-banner-card {
   border-radius: 16px;
   min-height: 400px;
+  width: 100%;
   aspect-ratio: 21 / 9;
   max-width: 1000px;
   margin: 0 auto 32px auto;
@@ -494,6 +495,13 @@ html, body, #root {
   border: 1px solid var(--border-glass);
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .hero-banner-card {
+    min-height: 250px;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .fire-danger-badge-container {

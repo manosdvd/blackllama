@@ -165,6 +165,15 @@ export default function App() {
         bVal = mbInterest[b["Merit Badge"]] || 0;
       }
 
+      if (mbSortKey === "Tier") {
+        const tierOrder = { "S": 0, "A": 1, "B": 2, "C": 3, "D": 4, "F": 5 };
+        let aRank = tierOrder[String(aVal).charAt(0)] ?? 99;
+        let bRank = tierOrder[String(bVal).charAt(0)] ?? 99;
+        if (aRank !== bRank) {
+          return mbSortDir === "asc" ? aRank - bRank : bRank - aRank;
+        }
+      }
+
       if (aVal < bVal) return mbSortDir === "asc" ? -1 : 1;
       if (aVal > bVal) return mbSortDir === "asc" ? 1 : -1;
       return 0;
@@ -447,6 +456,67 @@ export default function App() {
 
       {/* Main Content Pane */}
       <main className="main-content">
+        {activeTab === "dashboard" && (
+          <div className="animate-fade-in" style={{ paddingBottom: "8px" }}>
+            {/* Hero Banner Image */}
+            <div className="hero-banner-card" style={{ position: "relative", overflow: "hidden" }}>
+              <video 
+                ref={heroVideoRef}
+                autoPlay 
+                muted 
+                playsInline 
+                onEnded={() => setShowVideoReplay(true)}
+                style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", top: 0, left: 0, zIndex: 0 }}
+              >
+                <source src="/title_card.mp4" type="video/mp4" />
+              </video>
+              
+              <div className="hero-banner-overlay" style={{ position: "relative", zIndex: 1, height: "100%" }}>
+                
+                {showVideoReplay && (
+                  <button 
+                    onClick={handleReplayVideo}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      background: "rgba(0,0,0,0.5)",
+                      border: "2px solid rgba(255,255,255,0.3)",
+                      backdropFilter: "blur(4px)",
+                      color: "white",
+                      padding: "16px",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "var(--transition-smooth)"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "rgba(255,122,0,0.6)";
+                      e.currentTarget.style.borderColor = "var(--color-primary)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(0,0,0,0.5)";
+                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
+                    }}
+                  >
+                    <RotateCcw size={32} />
+                  </button>
+                )}
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "8px" }}>
+                  <Anchor className="w-8 h-8 text-primary" />
+                  <h2>Welcome to Camp Lawton</h2>
+                  <Anchor className="w-8 h-8 text-primary" />
+                </div>
+                <p style={{ fontSize: "18px", color: "var(--color-primary-light)", fontWeight: "bold" }}>2027 Season: Pirate Crew Adventures</p>
+                <p style={{ marginTop: "4px", maxWidth: "800px" }}>Celebrating over 100 years of Scouting adventures! Nestled in the stunning Coronado National Forest on Mount Lemmon, Camp Lawton offers an intimate, unforgettable summer camp experience.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Top Info Bar */}
         <div className="status-bar">
           <div className="page-title">
@@ -561,76 +631,9 @@ export default function App() {
             {/* 1. DASHBOARD HUB VIEW */}
             {activeTab === "dashboard" && (
               <div className="animate-slide-up">
-                {/* Hero Banner Image */}
-                <div className="hero-banner-card" style={{ position: "relative", overflow: "hidden" }}>
-                  <video 
-                    ref={heroVideoRef}
-                    autoPlay 
-                    muted 
-                    playsInline 
-                    onEnded={() => setShowVideoReplay(true)}
-                    style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", top: 0, left: 0, zIndex: 0 }}
-                  >
-                    <source src="/title_card.mp4" type="video/mp4" />
-                  </video>
-                  
-                  <div className="hero-banner-overlay" style={{ position: "relative", zIndex: 1, height: "100%" }}>
-                    
-                    {showVideoReplay && (
-                      <button 
-                        onClick={handleReplayVideo}
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          left: "50%",
-                          transform: "translate(-50%, -50%)",
-                          background: "rgba(0,0,0,0.5)",
-                          border: "2px solid rgba(255,255,255,0.3)",
-                          backdropFilter: "blur(4px)",
-                          color: "white",
-                          padding: "16px",
-                          borderRadius: "50%",
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          transition: "var(--transition-smooth)"
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = "rgba(255,122,0,0.6)";
-                          e.currentTarget.style.borderColor = "var(--color-primary)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "rgba(0,0,0,0.5)";
-                          e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
-                        }}
-                      >
-                        <RotateCcw size={32} />
-                      </button>
-                    )}
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "8px" }}>
-                      <Anchor className="w-8 h-8 text-primary" />
-                      <h2>Welcome to Camp Lawton</h2>
-                      <Anchor className="w-8 h-8 text-primary" />
-                    </div>
-                    <p style={{ fontSize: "18px", color: "var(--color-primary-light)", fontWeight: "bold" }}>2027 Season: Pirate Crew Adventures</p>
-                    <p style={{ marginTop: "4px", maxWidth: "800px" }}>Celebrating over 100 years of Scouting adventures! Nestled in the stunning Coronado National Forest on Mount Lemmon, Camp Lawton offers an intimate, unforgettable summer camp experience.</p>
-                  </div>
-                </div>
-
-                {/* CRITICAL INFORMATION ALERT */}
-                <div style={{ padding: "16px", background: "rgba(239,68,68,0.1)", border: "2px solid var(--color-danger)", borderRadius: "8px", marginBottom: "24px" }}>
-                  <h3 style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-danger)", fontFamily: "var(--font-title)", marginBottom: "12px" }}>
-                    <ShieldAlert className="w-5 h-5 animate-pulse" />
-                    CRITICAL INFORMATION — READ BEFORE YOU MAKE PLANS
-                  </h3>
-                  <ul style={{ listStyleType: "disc", paddingLeft: "24px", color: "var(--color-text-bright)", fontSize: "14px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                    <li><strong>NO AQUATICS AND LIMITED FIREARMS:</strong> Camp Lawton has no pool or waterfront and the USFS has limited us to pellet rifles for the Rifle merit badge.</li>
-                    <li><strong>FIRE:</strong> Fire restrictions may prohibit campfires at any time — check daily with staff.</li>
-                    <li><strong>VEHICLES:</strong> Not permitted inside camp beyond the parking area. Plan to carry your gear. Back into spaces.</li>
-                    <li><strong>MEDICAL:</strong> All prescription meds must be surrendered to the Medic in original bottles. Forms A, B, and C required for &gt; 3 days.</li>
-                    <li><strong>SAFEGUARDING YOUTH:</strong> All adults must have current SYT. Two-deep leadership required. No 1-on-1 adult/youth contact.</li>
-                  </ul>
+                {/* Dancing Logo Fun Element */}
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "32px", animation: "fade-in 1s ease-out" }}>
+                  <img src="/dancing_logo.gif" alt="Camp Lawton Dancing Logo" style={{ width: "220px", height: "auto" }} />
                 </div>
 
                 {/* Welcome Letters */}
@@ -1146,6 +1149,22 @@ export default function App() {
             {/* 3. CAMPSITE FINDER VIEW */}
             {activeTab === "campsites" && (
               <div className="animate-slide-up">
+                
+                {/* CRITICAL INFORMATION ALERT */}
+                <div style={{ padding: "16px", background: "rgba(239,68,68,0.1)", border: "2px solid var(--color-danger)", borderRadius: "8px", marginBottom: "24px" }}>
+                  <h3 style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--color-danger)", fontFamily: "var(--font-title)", marginBottom: "12px" }}>
+                    <ShieldAlert className="w-5 h-5 animate-pulse" />
+                    CRITICAL INFORMATION — READ BEFORE YOU MAKE PLANS
+                  </h3>
+                  <ul style={{ listStyleType: "disc", paddingLeft: "24px", color: "var(--color-text-bright)", fontSize: "14px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <li><strong>NO AQUATICS AND LIMITED FIREARMS:</strong> Camp Lawton has no pool or waterfront and the USFS has limited us to pellet rifles for the Rifle merit badge.</li>
+                    <li><strong>FIRE:</strong> Fire restrictions may prohibit campfires at any time — check daily with staff.</li>
+                    <li><strong>VEHICLES:</strong> Not permitted inside camp beyond the parking area. Plan to carry your gear. Back into spaces.</li>
+                    <li><strong>MEDICAL:</strong> All prescription meds must be surrendered to the Medic in original bottles. Forms A, B, and C required for &gt; 3 days.</li>
+                    <li><strong>SAFEGUARDING YOUTH:</strong> All adults must have current SYT. Two-deep leadership required. No 1-on-1 adult/youth contact.</li>
+                  </ul>
+                </div>
+
                 <div className="filter-bar">
                   <button onClick={() => setCampsiteFilter("all")} className={`filter-btn ${campsiteFilter === "all" ? "active" : ""}`}>All Campsites</button>
                   <button onClick={() => setCampsiteFilter("high-cap")} className={`filter-btn ${campsiteFilter === "high-cap" ? "active" : ""}`}>High Capacity (28+)</button>
