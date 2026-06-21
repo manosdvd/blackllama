@@ -1,0 +1,2460 @@
+const schedules = {
+  "Cub_Leader_Schedule": {
+    "friday": [
+      {
+        "time": "2:00–3:30 PM",
+        "task": "Fleet Arrival & Check-In",
+        "desc": "Complete check-in; surrender medications to CHO; receive Ship Assignment and program group"
+      },
+      {
+        "time": "3:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:30–4:30 PM",
+        "task": "Ship Setup — Tent Pitching & Campsite Organization",
+        "desc": "Encourage scouts to help set up — great advancement opportunity"
+      },
+      {
+        "time": "4:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:30–5:30 PM",
+        "task": "Safety Brief & Ship Tour (ALL must attend)",
+        "desc": "Mandatory for all scouts, leaders, and families. Covers USFS rules, emergency plans, buddy system."
+      },
+      {
+        "time": "5:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:30–5:50 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "5:50 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:00–7:00 PM",
+        "task": "Galley Dinner — Captain’s Welcome Feast (60 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:00 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist with Galley cleanup before proceeding"
+      },
+      {
+        "time": "7:30–8:30 PM",
+        "task": "★ Staff Campfire — Scouts & Families Watch",
+        "desc": "Staff perform pirate skits, songs, storytelling. All attend as audience. Subject to USFS fire restrictions."
+      },
+      {
+        "time": "8:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:40 PM",
+        "task": "Taps — Cubs Lights Out",
+        "desc": "Pack leaders ensure Cubs in tents"
+      }
+    ],
+    "saturday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40–7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10–7:45 AM",
+        "task": "Mess Hall Feast — Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist with Galley cleanup before proceeding"
+      },
+      {
+        "time": "8:15–8:45 AM",
+        "task": "Cabin/Tent Clean-Up & Inspection (30 min)",
+        "desc": "Leaders inspect and encourage tidiness"
+      },
+      {
+        "time": "8:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:55–10:25 AM",
+        "task": "Activity Block A — Pirate Ship Building & Flag Design (90 min)",
+        "desc": "PS-208 / PS-223. Families welcome to follow their scout’s group. Age-appropriate materials by group."
+      },
+      {
+        "time": "10:25 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:35–11:05 AM",
+        "task": "Snack Break & Free Play (30 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 AM–12:45 PM",
+        "task": "Activity Block B — Grand Treasure Hunt! Orienteering (90 min)",
+        "desc": "PS-212. Buddy system required throughout. Within USFS permit boundary."
+      },
+      {
+        "time": "12:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:55–1:40 PM",
+        "task": "Buccaneer Lunch (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:40 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist with Galley cleanup before proceeding"
+      },
+      {
+        "time": "2:10–2:40 PM",
+        "task": "Leader’s Meeting (30 min) — Captain’s Quarters",
+        "desc": "All unit leaders attend"
+      },
+      {
+        "time": "2:10–2:40 PM",
+        "task": "Scout & Family Free Time (concurrent)",
+        "desc": "Trading post, campsite, fellowship"
+      },
+      {
+        "time": "2:40 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:50–3:20 PM",
+        "task": "Rest Hour / Story Time (30 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:20 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:30–5:00 PM",
+        "task": "Afternoon Activity — Cannon Raid! & Walk the Plank (90 min)",
+        "desc": "PS-223. Dry beanbag toss; balance beam max 12\" height. Group C rotates to Climbing Wall (GSS gss08) — Webelos/AOL only."
+      },
+      {
+        "time": "5:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:10–6:10 PM",
+        "task": "Pirate Skit Practice & Knot Tying Review (60 min)",
+        "desc": "PD-112: ALL skit content must be staff-approved before campfire. PS-212 age-appropriate knots; bead award for proficiency."
+      },
+      {
+        "time": "6:10 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:20–6:40 PM",
+        "task": "Evening Flag Ceremony (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:50–7:35 PM",
+        "task": "Mess Hall Feast — Dinner (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist with Galley cleanup before proceeding"
+      },
+      {
+        "time": "8:05–9:05 PM",
+        "task": "★ Youth Campfire — Scouts & Families Perform",
+        "desc": "Scout-led campfire. ALL pre-approved content only. Leaders attend and supervise. Subject to USFS fire restrictions."
+      },
+      {
+        "time": "9:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15–9:45 PM",
+        "task": "Cracker Barrel & Fellowship",
+        "desc": "Snacks at Galley; informal fellowship"
+      },
+      {
+        "time": "9:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Leaders ensure scouts in tents"
+      }
+    ],
+    "sunday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40–7:00 AM",
+        "task": "Morning Flag Ceremony (20 min)",
+        "desc": "Final flag ceremony of the weekend"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10–7:45 AM",
+        "task": "Farewell Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist with Galley cleanup before proceeding"
+      },
+      {
+        "time": "8:15–9:45 AM",
+        "task": "Ship Pack-Up & Final Officer Check (90 min)",
+        "desc": "Units pack all gear. Complete campsite inspection. USFS LNT: leave site cleaner than found."
+      },
+      {
+        "time": "9:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55–10:45 AM",
+        "task": "Closing Ceremony & Weekend Awards (50 min)",
+        "desc": "Awards, beads, patches, recognition. Final pirate send-off."
+      },
+      {
+        "time": "10:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:55 AM+",
+        "task": "Homeward Bound — Family Departure",
+        "desc": "Retrieve medications from CHO with signature. Receive departure clearance before leaving. 10 MPH speed limit."
+      }
+    ]
+  },
+  "Cub_Staff_Schedule": {
+    "friday": [
+      {
+        "time": "1:00–2:00 PM",
+        "task": "Staff Setup & Pre-Opening Inspection",
+        "desc": "All staff on site; activity stations set; USFS site inspection; campfire area checked; fire restriction status verified"
+      },
+      {
+        "time": "2:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:00–3:30 PM",
+        "task": "Fleet Arrival & Check-In",
+        "desc": "Staff guide families to campsites; health forms collected; medications to CHO (HS-508); back vehicles into spaces"
+      },
+      {
+        "time": "3:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:30–4:30 PM",
+        "task": "Ship Setup — Tent Pitching & Campsite Organization",
+        "desc": "Staff assist families; encourage scout participation"
+      },
+      {
+        "time": "4:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:30–5:30 PM",
+        "task": "Safety Brief & Ship Tour (ALL attend)",
+        "desc": "All staff attend; cover USFS land rules, emergency plans, buddy system, LNT, YP"
+      },
+      {
+        "time": "5:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:30–5:50 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony; ensure respectful participation"
+      },
+      {
+        "time": "5:50 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:00–7:00 PM",
+        "task": "Galley Dinner — Captain’s Welcome Feast (60 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:00 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist; staff inspect before release"
+      },
+      {
+        "time": "7:30–8:30 PM",
+        "task": "★ Staff Campfire — Scouts & Families Watch",
+        "desc": "Staff perform pirate skits, songs, storytelling. All attend as audience. CHECK USFS fire status — have no-flame backup ready."
+      },
+      {
+        "time": "8:30 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:40 PM",
+        "task": "Taps — Cubs Lights Out",
+        "desc": "Pack leaders ensure Cubs in tents; families may stay up quietly"
+      },
+      {
+        "time": "8:55 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Check-in notes, campfire debrief, Saturday rotation assignments, health/safety flags"
+      }
+    ],
+    "saturday": [
+      {
+        "time": "6:00–6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "All staff — pre-day briefing, rotation assignments, safety review, archery range inspection, flag ceremony prep, climbing wall check (Group C only)"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40–7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Staff assist with flag ceremony; ensure respectful participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10–7:45 AM",
+        "task": "Mess Hall Feast — Breakfast (35 min)",
+        "desc": "Dining hall staff manage serving line; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist; staff inspect before release"
+      },
+      {
+        "time": "8:15–8:45 AM",
+        "task": "Cabin/Tent Clean-Up & Inspection (30 min)",
+        "desc": "Leaders inspect; staff support"
+      },
+      {
+        "time": "8:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:55–10:25 AM",
+        "task": "Activity Block A — Pirate Ship Building & Flag Design (90 min)",
+        "desc": "PS-208/PS-223: safety scissors for Tigers/Wolves; age-appropriate materials; LNT — pack out all craft materials"
+      },
+      {
+        "time": "10:25 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:35–11:05 AM",
+        "task": "Snack Break & Free Play (30 min)",
+        "desc": "Staff supervise snack distribution and unstructured play"
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 AM–12:45 PM",
+        "task": "Activity Block B — Grand Treasure Hunt! Orienteering & Map Skills (90 min)",
+        "desc": "PS-212: all clues within USFS permit boundary; buddy system enforced; radio contact maintained; one adult leader per den group"
+      },
+      {
+        "time": "12:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:55–1:40 PM",
+        "task": "Buccaneer Lunch (45 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "1:40 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist; staff inspect before release"
+      },
+      {
+        "time": "2:10–2:40 PM",
+        "task": "Leader’s Meeting (30 min) — Captain’s Quarters",
+        "desc": "Staff facilitate; review campfire kit approval process"
+      },
+      {
+        "time": "2:10–2:40 PM",
+        "task": "Scout & Family Free Time (concurrent)",
+        "desc": "Designated staff supervise; Trading Post, campsite, fellowship"
+      },
+      {
+        "time": "2:40 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:50–3:20 PM",
+        "task": "Rest Hour / Story Time (30 min)",
+        "desc": "Staff facilitate quiet activities or read pirate-themed stories"
+      },
+      {
+        "time": "3:20 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:30–5:00 PM",
+        "task": "Afternoon Activity — Cannon Raid! & Walk the Plank (90 min)",
+        "desc": "PS-223: dry beanbag toss; land-based only. Walk the Plank: max 12\" height; spotter required for Tigers/Wolves; one scout at a time. GROUP C ROTATES TO CLIMBING WALL (GSS gss08) — Webelos/AOL only; certified supervisor; full PPE."
+      },
+      {
+        "time": "5:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:10–6:10 PM",
+        "task": "Pirate Skit Practice & Knot Tying Review (60 min)",
+        "desc": "PD-112: staff review ALL skit content, songs, and stories before campfire — nothing proceeds without written staff approval. PS-212: age-appropriate knots; unit leaders assist; bead award for proficiency"
+      },
+      {
+        "time": "6:10 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:20–6:40 PM",
+        "task": "Evening Flag Ceremony (20 min)",
+        "desc": "Staff assist with flag retirement"
+      },
+      {
+        "time": "6:40 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:50–7:35 PM",
+        "task": "Mess Hall Feast — Dinner (45 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist; staff inspect before release"
+      },
+      {
+        "time": "8:05–9:05 PM",
+        "task": "★ Youth Campfire — Scouts & Families Perform",
+        "desc": "ALL pre-approved content only. Staff manage fire. CHECK USFS fire status — have no-flame backup ready."
+      },
+      {
+        "time": "9:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15–9:45 PM",
+        "task": "Cracker Barrel & Fellowship",
+        "desc": "Snacks at Galley; informal fellowship for families and scouts"
+      },
+      {
+        "time": "9:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Pack leaders ensure Cubs in tents"
+      },
+      {
+        "time": "10:10 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Debrief campfire; confirm Sunday departure logistics; document any incidents per PD-112"
+      }
+    ],
+    "sunday": [
+      {
+        "time": "6:00–6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "All staff — departure logistics, LNT final sweep assignments, awards prep, medication return process"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40–7:00 AM",
+        "task": "Morning Flag Ceremony (20 min)",
+        "desc": "Final flag ceremony of the weekend"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10–7:45 AM",
+        "task": "Farewell Breakfast (35 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts & families assist; staff inspect before release"
+      },
+      {
+        "time": "8:15–9:45 AM",
+        "task": "Ship Pack-Up & Final Officer Check (90 min)",
+        "desc": "Staff inspect campsites; assist with packing. USFS LNT final sweep — leave site cleaner than found."
+      },
+      {
+        "time": "9:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55–10:45 AM",
+        "task": "Closing Ceremony & Weekend Awards (50 min)",
+        "desc": "Awards, beads, patches, recognition distributed. Scout highlights shared. Final pirate send-off."
+      },
+      {
+        "time": "10:45 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:55 AM+",
+        "task": "Homeward Bound — Family Departure",
+        "desc": "Staff manage traffic. 10 MPH speed limit. Return medications to families with signature (HS-508). Departure clearance from Camp Director required."
+      },
+      {
+        "time": "After departure",
+        "task": "Site Restoration — Staff",
+        "desc": "Final USFS-required site restoration, equipment inventory, facility report"
+      },
+      {
+        "time": "After restoration",
+        "task": "End-of-Weekend Staff Debrief (15 min)",
+        "desc": "Document all incidents per PD-112; note equipment needs; celebrate wins"
+      }
+    ]
+  },
+  "BSA_Leader_Schedule": {
+    "sunday": [
+      {
+        "time": "1:00 – 3:00 PM",
+        "task": "Fleet Arrival & Ship Setup",
+        "desc": "Complete check-in; surrender medications to CHO; receive Ship Assignment"
+      },
+      {
+        "time": "3:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:00 – 4:00 PM",
+        "task": "Safety Brief & Ship Tour (ALL must attend)",
+        "desc": "Mandatory for all scouts and leaders; covers emergency plans and USFS rules"
+      },
+      {
+        "time": "4:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:00 – 5:00 PM",
+        "task": "Totin’ Chit",
+        "desc": "Individual assessment for each scout"
+      },
+      {
+        "time": "5:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:00 – 5:45 PM",
+        "task": "Pirate Crew Muster",
+        "desc": "Unit introductions; crew flag presentation"
+      },
+      {
+        "time": "5:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:45 – 6:05 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Leaders assist with respectful flag retirement"
+      },
+      {
+        "time": "6:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 7:05 PM",
+        "task": "Galley Grub — Captain’s Feast (60 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:05 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:35 – 8:35 PM",
+        "task": "Scouts Own — Non-Denominational Ceremony",
+        "desc": "All scouts and leaders attend"
+      },
+      {
+        "time": "8:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:45 – 9:45 PM",
+        "task": "★ Staff Campfire — Scouts Watch",
+        "desc": "Staff perform skits, songs, storytelling. Fire status confirmed by staff."
+      },
+      {
+        "time": "9:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Leaders ensure scouts in tents"
+      }
+    ],
+    "monday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:15 – 9:05 AM",
+        "task": "Merit Badge Session 1 (50 min)",
+        "desc": "Scouts proceed to assigned MB class"
+      },
+      {
+        "time": "9:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15 – 10:05 AM",
+        "task": "Merit Badge Session 2 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:15 – 11:05 AM",
+        "task": "Merit Badge Session 3 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": "Scouts cheer from the gallery"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Leaders to Captain’s Quarters. Scouts have supervised free time."
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 2:25 PM",
+        "task": "Merit Badge Session 4 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:35 – 3:25 PM",
+        "task": "Merit Badge Session 5 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:35 – 4:25 PM",
+        "task": "Merit Badge Session 6 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Pieces of Eight Scavenger Hunt",
+        "desc": "Unit leaders supervise and participate"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:25 – 9:25 PM",
+        "task": "Evening Program — Muppet Treasure Island (G-rated, full film)",
+        "desc": "Scouts and leaders welcome"
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      }
+    ],
+    "tuesday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:15 – 11:05 AM",
+        "task": "Merit Badge Sessions 1–3 (50 min each, 10-min transitions)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Captain’s Quarters. Scouts supervised free time."
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 4:25 PM",
+        "task": "Merit Badge Sessions 4–6 (50 min each, 10-min transitions)",
+        "desc": ""
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Knot-Tying Challenge: Secure the Ship’s Rigging",
+        "desc": ""
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "Evening Program — Karaoke Night",
+        "desc": "All welcome"
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:25 PM",
+        "task": "Pirate First Aid Scenarios (non-emergency)",
+        "desc": "Leaders encouraged to participate with scouts"
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      }
+    ],
+    "wednesday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:15 – 11:05 AM",
+        "task": "Merit Badge Sessions 1–3 / Treasure Map Prep (50 min each, 10-min transitions)",
+        "desc": "Some units may opt into Treasure Hunt day hike prep"
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Captain’s Quarters. Scouts supervised free time."
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 4:25 PM",
+        "task": "Merit Badge Sessions 4–6 / Treasure Hunt / Plunder Challenge (10-min transitions)",
+        "desc": "All clues within USFS permit boundary. Leaders accompany scouts."
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Crew Campsite Activity — Pirate Shanty & Tale Prep",
+        "desc": "Begin preparing Friday campfire content with your scouts now"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "★ Evening Program — Pirate Lore & Stargazing",
+        "desc": "Subject to USFS fire restrictions. No-flame backup ready."
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:25 PM",
+        "task": "Ship Campcraft Skills — Tent Pitching Races / Nautical Knots Challenge",
+        "desc": ""
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      }
+    ],
+    "thursday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Leaders encourage scout participation"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:15 – 11:05 AM",
+        "task": "Merit Badge Sessions 1–3 / Gold Doubloon Rush Games (50 min each, 10-min transitions)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": ""
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min) — Final meeting of the week",
+        "desc": "Review Friday departure; confirm campfire plan with Camp Director"
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 4:25 PM",
+        "task": "Merit Badge Sessions 4–6 & Badge Completion (50 min each, 10-min transitions)",
+        "desc": "Final opportunity for scouts to complete requirements"
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Walk the Plank (Gaga Ball Tournament)",
+        "desc": ""
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "Scout Campfire Kit Organization & Staff Kit Approval",
+        "desc": "Leaders help scouts finalize content. Staff approve ALL skits/songs before performance. PD-112 requirement."
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:35 PM",
+        "task": "★ Youth Campfire — Scouts Perform",
+        "desc": "Scout-led. All pre-approved content. Leaders attend and supervise. USFS fire status."
+      },
+      {
+        "time": "9:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:45 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      }
+    ],
+    "friday": [
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:15 – 11:15 AM",
+        "task": "Individual Funday Activities, MB Make-Up & Project Completion",
+        "desc": "Scouts choose activities; leaders available"
+      },
+      {
+        "time": "11:15 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:25 – 11:40 AM",
+        "task": "Captain’s Challenge Staff Duel — Final (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:50 AM – 12:35 PM",
+        "task": "Ship Clean-Up & Closing Ceremony / Lunch",
+        "desc": "Units begin campsite cleanup. USFS LNT final sweep."
+      },
+      {
+        "time": "12:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "1:05 – 2:55 PM",
+        "task": "Afternoon Funday, Art Show & Pirate History Museum",
+        "desc": ""
+      },
+      {
+        "time": "2:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:05 – 5:05 PM",
+        "task": "★ Camper Pirate Campfire (Full Program)",
+        "desc": "All pre-approved Thursday content. Leaders supervise units. USFS fire status."
+      },
+      {
+        "time": "5:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:15 – 5:35 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:45 – 6:35 PM",
+        "task": "Farewell Dinner",
+        "desc": ""
+      },
+      {
+        "time": "6:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "7:05 – 8:05 PM",
+        "task": "★ Closing Campfire & Team Building Games",
+        "desc": "Final evening program. USFS fire status."
+      }
+    ],
+    "saturday": [
+      {
+        "time": "7:00 – 7:15 AM",
+        "task": "Morning Flags (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:15 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:25 – 8:00 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:00 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist with Galley cleanup"
+      },
+      {
+        "time": "8:30 – 11:00 AM",
+        "task": "Final Ship Clean-Up, Packing & Check-Out Prep",
+        "desc": "Complete campsite inspection; pack all gear; USFS site left clean"
+      },
+      {
+        "time": "11:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:10 – 11:30 AM",
+        "task": "Final Gathering & Farewell",
+        "desc": ""
+      },
+      {
+        "time": "11:30 AM",
+        "task": "Camper Departure",
+        "desc": "Retrieve medications from CHO with signature. Departure clearance before leaving. 10 MPH on access roads."
+      }
+    ]
+  },
+  "BSA_Staff_Schedule": {
+    "sunday": [
+      {
+        "time": "1:00 – 3:00 PM",
+        "task": "Fleet Arrival & Ship Setup",
+        "desc": "Staff guide units to campsites; assist with check-in and orientation"
+      },
+      {
+        "time": "3:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:00 – 4:00 PM",
+        "task": "Navigating the High Seas — Safety Brief & Ship Tour",
+        "desc": "All staff attend; cover rules and emergency plans"
+      },
+      {
+        "time": "4:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:00 – 5:00 PM",
+        "task": "Totin’ Chit",
+        "desc": "Proper demonstration, supervision, individual assessment"
+      },
+      {
+        "time": "5:00 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:00 – 5:45 PM",
+        "task": "Pirate Crew Muster",
+        "desc": "Unit leaders facilitate introductions; crew flag presentation"
+      },
+      {
+        "time": "5:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:45 – 6:05 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "6:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 7:05 PM",
+        "task": "Galley Grub — Captain’s Feast (60 min)",
+        "desc": "Dining hall staff manage serving line"
+      },
+      {
+        "time": "7:05 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee and inspect"
+      },
+      {
+        "time": "7:35 – 8:35 PM",
+        "task": "Scouts Own — Non-Denominational Ceremony",
+        "desc": "Designated staff lead; maintain respectful atmosphere"
+      },
+      {
+        "time": "8:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:45 – 9:45 PM",
+        "task": "★ Staff Campfire — Scouts Watch",
+        "desc": "Staff perform: skits, songs, storytelling. CHECK USFS fire status."
+      },
+      {
+        "time": "9:45 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:55 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Staff ensure quiet in all campsites"
+      },
+      {
+        "time": "10:10 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Sunday check-in notes, campfire debrief, Monday prep"
+      }
+    ],
+    "monday": [
+      {
+        "time": "6:00 – 6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "All staff — pre-day briefing, assignments, safety reminders"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:15 – 9:05 AM",
+        "task": "Merit Badge Session 1 (50 min)",
+        "desc": "Counselors deliver instruction, track progress, ensure safety"
+      },
+      {
+        "time": "9:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15 – 10:05 AM",
+        "task": "Merit Badge Session 2 (50 min)",
+        "desc": "Counselors deliver instruction"
+      },
+      {
+        "time": "10:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:15 – 11:05 AM",
+        "task": "Merit Badge Session 3 (50 min)",
+        "desc": "Counselors deliver instruction"
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": "Friendly competition; good sportsmanship"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Captain’s Quarters; staff facilitate and record notes"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "Scout Free Time (concurrent)",
+        "desc": "Trading post, campsite, fellowship — designated staff supervise"
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 2:25 PM",
+        "task": "Merit Badge Session 4 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:35 – 3:25 PM",
+        "task": "Merit Badge Session 5 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:35 – 4:25 PM",
+        "task": "Merit Badge Session 6 (50 min)",
+        "desc": "Counselors begin sign-off on completed requirements"
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Pieces of Eight Scavenger Hunt",
+        "desc": "Staff organize teams, set course, supervise"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "7:25 – 9:25 PM",
+        "task": "Evening Program — Muppet Treasure Island (G-rated film)",
+        "desc": "Staff set up projection; ensure good viewing"
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Staff ensure quiet in all campsites"
+      },
+      {
+        "time": "9:50 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Review day; flag any issues; preview Tuesday"
+      }
+    ],
+    "tuesday": [
+      {
+        "time": "6:00 – 6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "All staff — pre-day briefing, assignments, safety reminders"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:15 – 9:05 AM",
+        "task": "Merit Badge Session 1 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15 – 10:05 AM",
+        "task": "Merit Badge Session 2 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:15 – 11:05 AM",
+        "task": "Merit Badge Session 3 (50 min)",
+        "desc": "Shooting sports / archery sessions — certified instructors; PS-213/214 SOPs posted"
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": "Friendly competition; good sportsmanship"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Captain’s Quarters; staff facilitate and record notes"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "Scout Free Time (concurrent)",
+        "desc": "Trading post, campsite, fellowship — designated staff supervise"
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 4:25 PM",
+        "task": "Merit Badge Sessions 4–6 (50 min each, 10-min transitions)",
+        "desc": ""
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Knot-Tying Challenge: Ship’s Rigging",
+        "desc": "Staff organize, set course, supervise"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "Evening Program — Karaoke Night",
+        "desc": "Staff manage equipment and selections; encourage participation"
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:25 PM",
+        "task": "Pirate First Aid Scenarios (Non-Emergency)",
+        "desc": "Staff set up scenarios; safe learning environment"
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      },
+      {
+        "time": "9:50 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Review day; flag any items; preview Wednesday"
+      }
+    ],
+    "wednesday": [
+      {
+        "time": "6:00 – 6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "Confirm Treasure Hunt/Plunder course set; LNT check on USFS land"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:15 – 9:05 AM",
+        "task": "Merit Badge Session 1 (50 min) / Treasure Map Prep",
+        "desc": "Trek leaders finalize hike prep and brief participants"
+      },
+      {
+        "time": "9:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15 – 10:05 AM",
+        "task": "Merit Badge Session 2 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:15 – 11:05 AM",
+        "task": "Merit Badge Session 3 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": "Friendly competition; good sportsmanship"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Captain’s Quarters; staff facilitate and record notes"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "Scout Free Time (concurrent)",
+        "desc": "Trading post, campsite, fellowship — designated staff supervise"
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 2:25 PM",
+        "task": "Merit Badge Session 4 (50 min) / Treasure Hunt / Plunder Challenge",
+        "desc": "Trek leaders guide; Plunder course staffed; all clues within USFS permit boundary"
+      },
+      {
+        "time": "2:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:35 – 3:25 PM",
+        "task": "Merit Badge Session 5 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:35 – 4:25 PM",
+        "task": "Merit Badge Session 6 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Crew Campsite Activity — Pirate Shanty & Tale Prep",
+        "desc": "Unit leaders guide scouts preparing Friday campfire performances"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "★ Evening Program — Pirate Lore & Stargazing",
+        "desc": "Staff lead storytelling and basic astronomy. CHECK USFS fire status."
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:25 PM",
+        "task": "Ship Campcraft Skills — Tent Pitching Races / Nautical Knots Challenge",
+        "desc": "Staff set up and supervise competitions"
+      },
+      {
+        "time": "9:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:35 PM",
+        "task": "Taps — Lights Out",
+        "desc": ""
+      },
+      {
+        "time": "9:50 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Confirm Thursday kit approvals; preview Thursday"
+      }
+    ],
+    "thursday": [
+      {
+        "time": "6:00 – 6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "Confirm kit approval process, campfire safety check, Friday logistics"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": "Dining hall staff manage; unit leaders supervise"
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:15 – 9:05 AM",
+        "task": "Merit Badge Session 1 (50 min) / Gold Doubloon Rush Games",
+        "desc": "Staff set up game stations; provide rules; manage scoring"
+      },
+      {
+        "time": "9:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:15 – 10:05 AM",
+        "task": "Merit Badge Session 2 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "10:15 – 11:05 AM",
+        "task": "Merit Badge Session 3 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:05 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:15 – 11:30 AM",
+        "task": "Captain’s Challenge Staff Duel (15 min)",
+        "desc": "Friendly competition; good sportsmanship"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM – 12:25 PM",
+        "task": "Galley Lunch (45 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "12:25 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "SPL & Leaders Meeting (30 min)",
+        "desc": "Final full meeting of the week; review Friday departure and campfire plan"
+      },
+      {
+        "time": "12:55 – 1:25 PM",
+        "task": "Scout Free Time (concurrent)",
+        "desc": "Trading post, campsite, fellowship — designated staff supervise"
+      },
+      {
+        "time": "1:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "1:35 – 2:25 PM",
+        "task": "Merit Badge Session 4 (50 min) & Badge Completion",
+        "desc": "Counselors finalize instruction; sign off on completed requirements"
+      },
+      {
+        "time": "2:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "2:35 – 3:25 PM",
+        "task": "Merit Badge Session 5 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:35 – 4:25 PM",
+        "task": "Merit Badge Session 6 (50 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "4:35 – 5:25 PM",
+        "task": "Campsite Competition — Walk the Plank (Gaga Ball Tournament)",
+        "desc": "Staff manage brackets, officiate games"
+      },
+      {
+        "time": "5:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 – 5:55 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "5:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:05 – 6:55 PM",
+        "task": "Galley Dinner (50 min)",
+        "desc": "Dining hall staff manage"
+      },
+      {
+        "time": "6:55 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "7:25 – 8:25 PM",
+        "task": "Scout Campfire Kit Organization & Staff Kit Approval",
+        "desc": "Scouts finalize kits; staff review and approve ALL content per BSA PD-112. Nothing proceeds without approval."
+      },
+      {
+        "time": "8:25 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:35 – 9:35 PM",
+        "task": "★ Youth Campfire — Scouts Perform",
+        "desc": "Scout-led; all content pre-approved. Staff manage fire. CHECK USFS fire status."
+      },
+      {
+        "time": "9:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "9:45 PM",
+        "task": "Taps — Lights Out",
+        "desc": "Staff ensure quiet"
+      },
+      {
+        "time": "10:00 PM",
+        "task": "Staff Debrief (15 min)",
+        "desc": "Debrief campfire; confirm Friday Funday assignments and departure logistics"
+      }
+    ],
+    "friday": [
+      {
+        "time": "6:00 – 6:30 AM",
+        "task": "Staff Meeting (30 min)",
+        "desc": "Funday assignments, campfire setup crew, departure logistics, final checks"
+      },
+      {
+        "time": "6:30 AM",
+        "task": "Reveille",
+        "desc": ""
+      },
+      {
+        "time": "6:30 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "6:40 – 7:00 AM",
+        "task": "Morning Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:10 – 7:45 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:45 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:15 – 11:15 AM",
+        "task": "Individual Funday Activities, MB Make-Up & Project Completion",
+        "desc": "Staff available at archery, low ropes, outdoor games; MB counselors on standby"
+      },
+      {
+        "time": "11:15 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:25 – 11:40 AM",
+        "task": "Captain’s Challenge Staff Duel — Final (15 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:40 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:50 AM – 12:35 PM",
+        "task": "Ship Clean-Up & Closing Ceremony / Lunch",
+        "desc": "Staff supervise campsite cleanup; assist with closing. USFS LNT final sweep."
+      },
+      {
+        "time": "12:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "1:05 – 2:55 PM",
+        "task": "Afternoon Funday, MB Make-Up, Art Show & Pirate History Museum",
+        "desc": "Staff at activity areas, art show, and museum"
+      },
+      {
+        "time": "2:55 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "3:05 – 5:05 PM",
+        "task": "★ Camper Pirate Campfire (Full Program)",
+        "desc": "Staff organize performance order; tech support; ALL CONTENT PRE-APPROVED. USFS fire status."
+      },
+      {
+        "time": "5:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:15 – 5:35 PM",
+        "task": "Evening Flags (20 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:35 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "5:45 – 6:35 PM",
+        "task": "Farewell Dinner",
+        "desc": "Final communal meal"
+      },
+      {
+        "time": "6:35 PM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "7:05 – 8:05 PM",
+        "task": "★ Closing Campfire & Team Building Games",
+        "desc": "Staff lead games; facilitate awards; celebratory atmosphere. USFS fire status."
+      },
+      {
+        "time": "8:05 PM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:15 PM onward",
+        "task": "Staff Wrap-Up",
+        "desc": "Designated wrap-up and facility prep tasks"
+      },
+      {
+        "time": "After wrap-up",
+        "task": "Staff Debrief (15 min)",
+        "desc": "End-of-week debrief; document incidents per PD-112"
+      }
+    ],
+    "saturday": [
+      {
+        "time": "7:00 – 7:15 AM",
+        "task": "Morning Flags (15 min)",
+        "desc": "Staff assist with flag ceremony"
+      },
+      {
+        "time": "7:15 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "7:25 – 8:00 AM",
+        "task": "Galley Breakfast (35 min)",
+        "desc": ""
+      },
+      {
+        "time": "8:00 AM",
+        "task": "▶ Post-Meal Cleanup Buffer (30 min)",
+        "desc": "Scouts assist; staff oversee"
+      },
+      {
+        "time": "8:30 – 11:00 AM",
+        "task": "Final Ship Clean-Up, Packing & Check-Out Prep",
+        "desc": "Staff inspect campsites; manage check-out flow. USFS LNT final site inspection."
+      },
+      {
+        "time": "11:00 AM",
+        "task": "▶ Transition (10 min)",
+        "desc": ""
+      },
+      {
+        "time": "11:10 – 11:30 AM",
+        "task": "Final Gathering & Farewell",
+        "desc": "Staff facilitate smooth, positive send-off"
+      },
+      {
+        "time": "11:30 AM",
+        "task": "Camper Departure",
+        "desc": "Staff manage traffic flow. 10 MPH on access roads."
+      },
+      {
+        "time": "11:30 AM onward",
+        "task": "Camp Facilities Cleaning & Site Restoration (Staff)",
+        "desc": "Assigned cleaning and USFS-required site restoration tasks"
+      }
+    ]
+  }
+}; export default schedules;

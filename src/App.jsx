@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { 
-  Flame, Sun, Cloud, CloudRain, CloudLightning, Wind, Droplets, 
-  AlertTriangle, Compass, MapPin, Phone, Calendar, CheckSquare, 
-  Square, Map as MapIcon, BookOpen, Info, Search, Menu, X, 
-  Activity, ExternalLink, Thermometer, ShieldAlert, Layers, 
+  Menu, X, Map as MapIcon, Calendar, Cloud, Sun, Droplets, Wind,
+  AlertTriangle, Navigation, Tent, TreePine, MapPin, 
+  Coffee, Users, Clock, Sunrise, BookOpen, Search, Compass,
+  ChevronDown, ChevronUp, Check, Settings, Star, Award, Shield,
   RefreshCw, CheckCircle2, AlertOctagon, HelpCircle, Anchor, Ship, Skull, SkullIcon
 } from "lucide-react";
 import { fetchLiveWeatherData } from "./utils/weatherApi";
+import { MERIT_BADGES } from './data/meritBadges';
+import schedules from "./data/schedules.js";
 
 // Campsite Data
 const CAMPSITES = [
@@ -130,6 +132,41 @@ export default function App() {
 
   // Responsive UI States
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Merit Badge Survey States
+  const [mbInterest, setMbInterest] = useState({});
+  const [mbSortKey, setMbSortKey] = useState("Interest");
+  const [mbSortDir, setMbSortDir] = useState("desc");
+
+  const handleMbInterestChange = (badgeName, val) => {
+    const newVal = Math.max(0, parseInt(val) || 0);
+    setMbInterest(prev => ({ ...prev, [badgeName]: newVal }));
+  };
+
+  const getSortedMeritBadges = () => {
+    return [...MERIT_BADGES].sort((a, b) => {
+      let aVal = a[mbSortKey];
+      let bVal = b[mbSortKey];
+
+      if (mbSortKey === "Interest") {
+        aVal = mbInterest[a["Merit Badge"]] || 0;
+        bVal = mbInterest[b["Merit Badge"]] || 0;
+      }
+
+      if (aVal < bVal) return mbSortDir === "asc" ? -1 : 1;
+      if (aVal > bVal) return mbSortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
+  const toggleMbSort = (key) => {
+    if (mbSortKey === key) {
+      setMbSortDir(prev => prev === "asc" ? "desc" : "asc");
+    } else {
+      setMbSortKey(key);
+      setMbSortDir(key === "Interest" ? "desc" : "asc");
+    }
+  };
 
   // Load weather from API on mount
   const refreshWeather = async () => {
@@ -312,8 +349,8 @@ export default function App() {
       <aside className={`sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img 
-            src="/cl-logo-1x1.png" 
-            alt="Camp Lawton Logo" 
+            src="/dancing_logo.gif" 
+            alt="Camp Lawton Dancing Logo" 
             style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'contain', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-glass)' }} 
           />
           <div className="sidebar-logo-text">
@@ -355,6 +392,14 @@ export default function App() {
             <BookOpen className="w-5 h-5" />
             Leader's Guide
           </div>
+          <div 
+            onClick={() => { setActiveTab("mb-survey"); setMobileMenuOpen(false); }} 
+            className={`nav-item ${activeTab === "mb-survey" ? "active" : ""}`}
+            id="nav-mb-survey"
+          >
+            <Compass className="w-5 h-5" />
+            MB Survey
+          </div>
         </nav>
 
         {/* Sidebar Footer */}
@@ -371,8 +416,8 @@ export default function App() {
       <header className="mobile-header">
         <div className="flex items-center gap-3" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img 
-            src="/cl-logo-1x1.png" 
-            alt="Camp Lawton Logo" 
+            src="/dancing_logo.gif" 
+            alt="Camp Lawton Dancing Logo" 
             style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', background: 'rgba(255,255,255,0.05)' }} 
           />
           <span style={{ fontFamily: 'var(--font-title)', fontWeight: 800, fontSize: '18px' }}>CAMP LAWTON</span>
@@ -396,6 +441,7 @@ export default function App() {
               {activeTab === "weather" && "Live Mountain Weather"}
               {activeTab === "campsites" && "Interactive Campsite Finder"}
               {activeTab === "guide" && "Interactive Leader's Guide"}
+              {activeTab === "mb-survey" && "Merit Badge Interest Survey"}
             </h1>
             <p>Mount Lemmon, Coronado National Forest | Elevation 7,900 ft</p>
           </div>
@@ -502,8 +548,17 @@ export default function App() {
             {activeTab === "dashboard" && (
               <div className="animate-slide-up">
                 {/* Hero Banner Image */}
-                <div className="hero-banner-card" style={{ position: "relative" }}>
-                  <div className="hero-banner-overlay">
+                <div className="hero-banner-card" style={{ position: "relative", overflow: "hidden" }}>
+                  <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", top: 0, left: 0, zIndex: 0 }}
+                  >
+                    <source src="/title_card.mp4" type="video/mp4" />
+                  </video>
+                  <div className="hero-banner-overlay" style={{ position: "relative", zIndex: 1, height: "100%" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px", justifyContent: "center", marginBottom: "8px" }}>
                       <Anchor className="w-8 h-8 text-primary" />
                       <h2>Welcome to Camp Lawton</h2>
@@ -1765,6 +1820,84 @@ export default function App() {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* 5. MERIT BADGE SURVEY VIEW */}
+            {activeTab === "mb-survey" && (
+              <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <div className="glass-panel" style={{ borderTop: "4px solid var(--color-primary-light)" }}>
+                  <h3 style={{ color: "var(--color-primary-light)", fontWeight: 700, marginBottom: "8px", fontSize: "20px", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Compass className="w-6 h-6" /> Merit Badge Interest Survey
+                  </h3>
+                  <p style={{ fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.5, marginBottom: "16px" }}>
+                    This is an interest survey to help camp leadership prepare staffing and resources. It is <strong>not</strong> a class sign-up. Please indicate how many scouts in your troop are interested in taking each merit badge. Note that badges marked with an asterisk (*) are technically doable but require staffing, equipment, or conditions we cannot guarantee will be available.
+                  </p>
+                  
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px", textAlign: "left" }}>
+                      <thead>
+                        <tr style={{ borderBottom: "2px solid rgba(255,255,255,0.1)", color: "var(--color-text-muted)" }}>
+                          <th onClick={() => toggleMbSort("Merit Badge")} style={{ cursor: "pointer", padding: "12px 8px" }}>Merit Badge {mbSortKey === "Merit Badge" && (mbSortDir === "asc" ? "▲" : "▼")}</th>
+                          <th onClick={() => toggleMbSort("Area")} style={{ cursor: "pointer", padding: "12px 8px" }}>Area {mbSortKey === "Area" && (mbSortDir === "asc" ? "▲" : "▼")}</th>
+                          <th onClick={() => toggleMbSort("Tier")} style={{ cursor: "pointer", padding: "12px 8px" }}>Tier {mbSortKey === "Tier" && (mbSortDir === "asc" ? "▲" : "▼")}</th>
+                          <th onClick={() => toggleMbSort("Status")} style={{ cursor: "pointer", padding: "12px 8px" }}>Status {mbSortKey === "Status" && (mbSortDir === "asc" ? "▲" : "▼")}</th>
+                          <th onClick={() => toggleMbSort("Interest")} style={{ cursor: "pointer", padding: "12px 8px", textAlign: "center", color: "var(--color-primary-light)" }}>
+                            Scouts Interested {mbSortKey === "Interest" && (mbSortDir === "asc" ? "▲" : "▼")}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {getSortedMeritBadges().map((mb, idx) => (
+                          <tr key={idx} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: idx % 2 === 0 ? "rgba(0,0,0,0.1)" : "transparent" }}>
+                            <td style={{ padding: "12px 8px", color: "var(--color-text-bright)", fontWeight: 500 }}>
+                              {mb["Merit Badge"]}
+                              {mb["Prerequisites"] && mb["Prerequisites"] !== "None" && mb["Prerequisites"] !== "N/A" && (
+                                <div style={{ fontSize: "11px", color: "var(--color-warning)", marginTop: "4px" }}>Req: {mb["Prerequisites"]}</div>
+                              )}
+                            </td>
+                            <td style={{ padding: "12px 8px", color: "var(--color-text)" }}>{mb["Area"]}</td>
+                            <td style={{ padding: "12px 8px", color: "var(--color-text-muted)" }}>{mb["Tier"]}</td>
+                            <td style={{ padding: "12px 8px" }}>
+                              <span style={{ 
+                                padding: "2px 6px", 
+                                borderRadius: "4px", 
+                                fontSize: "11px", 
+                                background: mb["Status"].includes("Complete") ? (mb["Status"].includes("*") ? "rgba(245,158,11,0.1)" : "rgba(16,185,129,0.1)") : "rgba(239,68,68,0.1)",
+                                color: mb["Status"].includes("Complete") ? (mb["Status"].includes("*") ? "var(--color-warning)" : "var(--color-success)") : "var(--color-danger)"
+                              }}>
+                                {mb["Status"]}
+                              </span>
+                            </td>
+                            <td style={{ padding: "12px 8px", textAlign: "center" }}>
+                              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                                <button 
+                                  onClick={() => handleMbInterestChange(mb["Merit Badge"], (mbInterest[mb["Merit Badge"]] || 0) - 1)}
+                                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "4px", width: "24px", height: "24px", color: "var(--color-text)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                                >
+                                  -
+                                </button>
+                                <input 
+                                  type="number" 
+                                  min="0" 
+                                  value={mbInterest[mb["Merit Badge"]] || 0} 
+                                  onChange={(e) => handleMbInterestChange(mb["Merit Badge"], e.target.value)}
+                                  style={{ width: "40px", textAlign: "center", background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "4px", color: "var(--color-text-bright)", padding: "4px" }}
+                                />
+                                <button 
+                                  onClick={() => handleMbInterestChange(mb["Merit Badge"], (mbInterest[mb["Merit Badge"]] || 0) + 1)}
+                                  style={{ background: "var(--color-primary)", border: "none", borderRadius: "4px", width: "24px", height: "24px", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
